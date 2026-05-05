@@ -21,4 +21,8 @@ class ApiMessages
     const TOKEN_INVALID = 'Token is invalid';
     const AUTHENTICATION_FAILED = 'Authentication failed';
     const LOGOUT_SUCCESS = 'Logout successful';
+    const PASSWORD_RESET_SUCCESS = 'Password reset successful';
+    const RESET_TOKEN_SENT = 'Reset token sent to email';
+    const INVALID_REQUEST = 'Invalid request';
+    const PASSWORD_UPDATED = 'Password updated successfully';
 }

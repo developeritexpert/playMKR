@@ -7,7 +7,12 @@ use Exception;
 use App\Constants\ApiMessages;
 use App\Constants\StatusCodes;
 use App\Helpers\ApiResponse;
+use App\Mail\ResetPasswordMail;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class AuthService
 {
@@ -69,7 +74,7 @@ class AuthService
         try {
 
             $token = $request->user()->currentAccessToken();
-            
+
             if (!$token) {
                 return ApiResponse::error(
                     ApiMessages::TOKEN_NOT_FOUND,
@@ -91,5 +96,71 @@ class AuthService
                 $e->getMessage()
             );
         }
+    }
+
+
+    public function forgotPassword(array $data)
+    {
+        $user = $this->userRepo->findByEmail($data['email']);
+
+        if (!$user) {
+            return ApiResponse::error(
+                ApiMessages::USER_NOT_FOUND,
+                StatusCodes::NOT_FOUND
+            );
+        }
+
+        // generate token
+        $token = Str::random(60);
+
+        // store token
+        DB::table('password_reset_tokens')->updateOrInsert(
+            ['email' => $data['email']],
+            [
+                'email' => $data['email'],
+                'token' => Hash::make($token),
+                'created_at' => Carbon::now()
+            ]
+        );
+
+        Mail::to($data['email'])->send(
+            new ResetPasswordMail($token, $data['email'])
+        );
+
+        return ApiResponse::success([], ApiMessages::RESET_TOKEN_SENT, StatusCodes::OK);
+    }
+
+
+    public function resetPassword(array $data)
+    {
+        $record = DB::table('password_reset_tokens')
+            ->where('email', $data['email'])
+            ->first();
+
+        if (!$record) {
+            return ApiResponse::error(ApiMessages::INVALID_REQUEST, StatusCodes::BAD_REQUEST);
+        }
+
+        // check token
+        if (!Hash::check($data['token'], $record->token)) {
+            return ApiResponse::error(ApiMessages::INVALID_REQUEST, StatusCodes::BAD_REQUEST);
+        }
+
+        // check expiry (e.g. 15 mins)
+        if (Carbon::parse($record->created_at)->addMinutes(15)->isPast()) {
+            return ApiResponse::error(ApiMessages::INVALID_REQUEST, StatusCodes::BAD_REQUEST);
+        }
+
+        // update password (mutator will hash)
+        $this->userRepo->updateByEmail($data['email'], [
+            'password' => $data['password']
+        ]);
+
+        // delete token
+        DB::table('password_reset_tokens')
+            ->where('email', $data['email'])
+            ->delete();
+
+        return ApiResponse::success([], ApiMessages::PASSWORD_RESET_SUCCESS, StatusCodes::OK);
     }
 }

@@ -21,7 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => CheckAdminRole::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
+    ->withExceptions(function (Exceptions $exceptions): void {  
         $exceptions->render(function (AuthenticationException $e, $request) {
 
             if (!$request->bearerToken()) {
