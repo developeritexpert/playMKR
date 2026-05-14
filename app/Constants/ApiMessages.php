@@ -6,6 +6,8 @@ class ApiMessages
 {
     const SUCCESS = 'Success';
     const ERROR = 'Error';
+
+    //Auth Messages
     const USER_CREATED = 'User created successfully';
     const USER_NOT_FOUND = 'User not found';
     const SOMETHING_WENT_WRONG = 'Something went wrong';
@@ -25,4 +27,7 @@ class ApiMessages
     const RESET_TOKEN_SENT = 'Reset token sent to email';
     const INVALID_REQUEST = 'Invalid request';
     const PASSWORD_UPDATED = 'Password updated successfully';
+
+    //Sponser Messages
+    const SPONSER_REQUEST_SUCCESS = 'Your application has been submitted successfully , we will contact you soon!';
 }
