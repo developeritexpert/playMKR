@@ -25,4 +25,18 @@ class ApiMessages
     const RESET_TOKEN_SENT = 'Reset token sent to email';
     const INVALID_REQUEST = 'Invalid request';
     const PASSWORD_UPDATED = 'Password updated successfully';
+
+    const SPONSORS_FETCHED = 'Sponsors fetched successfully';
+    const SPONSOR_FETCHED = 'Sponsor fetched successfully';
+    const SPONSOR_CREATED = 'Sponsor created successfully';
+    const SPONSOR_UPDATED = 'Sponsor updated successfully';
+    const SPONSOR_DELETED = 'Sponsor deleted successfully';
+    const SPONSOR_NOT_FOUND = 'Sponsor not found';
+
+    const DEALS_FETCHED = 'Deals fetched successfully';
+    const DEAL_FETCHED = 'Deal fetched successfully';
+    const DEAL_CREATED = 'Deal created successfully';
+    const DEAL_UPDATED = 'Deal updated successfully';
+    const DEAL_DELETED = 'Deal deleted successfully';
+    const DEAL_NOT_FOUND = 'Deal not found';
 }
