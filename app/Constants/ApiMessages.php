@@ -6,6 +6,8 @@ class ApiMessages
 {
     const SUCCESS = 'Success';
     const ERROR = 'Error';
+
+    //Auth Messages
     const USER_CREATED = 'User created successfully';
     const USER_NOT_FOUND = 'User not found';
     const SOMETHING_WENT_WRONG = 'Something went wrong';
@@ -26,6 +28,7 @@ class ApiMessages
     const INVALID_REQUEST = 'Invalid request';
     const PASSWORD_UPDATED = 'Password updated successfully';
 
+    //API/SponsorController
     const SPONSORS_FETCHED = 'Sponsors fetched successfully';
     const SPONSOR_FETCHED = 'Sponsor fetched successfully';
     const SPONSOR_CREATED = 'Sponsor created successfully';
@@ -39,4 +42,12 @@ class ApiMessages
     const DEAL_UPDATED = 'Deal updated successfully';
     const DEAL_DELETED = 'Deal deleted successfully';
     const DEAL_NOT_FOUND = 'Deal not found';
+
+    //Auth/Sponser Messages
+    const SPONSER_REQUEST_SUCCESS = 'Your application has been submitted successfully , we will contact you soon!';
+    const SPONSER_LIST_SUCCESS = 'Sponsor applications fetched successfully';
+
+    const SPONSER_NOT_FOUND = 'Sponsor Not Found';
+    const SPONSER_APPROVED = 'Sponsor Approved Successfully';
+    const SPONSER_REJECTED = 'Sponser Rejected';
 }

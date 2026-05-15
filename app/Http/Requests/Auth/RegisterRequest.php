@@ -23,7 +23,7 @@ class RegisterRequest extends FormRequest
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
-            'role_id'  => 'required|in:' . Roles::INTERNAL_TEAM . ',' . Roles::SPONSOR,
+            'role_id'  => 'required|in:' . Roles::INTERNAL_TEAM . ',' . Roles::SPONSOR . ',' . Roles::ADMIN,
         ];
     }
 

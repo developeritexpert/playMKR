@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Middleware\CheckAdminRole;
+use App\Http\Middleware\CheckRole;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -18,7 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'admin' => CheckAdminRole::class,
+            'role' => CheckRole::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {  
@@ -27,13 +27,15 @@ return Application::configure(basePath: dirname(__DIR__))
             if (!$request->bearerToken()) {
                 return ApiResponse::error(
                     ApiMessages::TOKEN_REQUIRED,
-                    StatusCodes::UNAUTHORIZED
+                    StatusCodes::UNAUTHORIZED,
+                    $e->getMessage()
                 );
             }
 
             return ApiResponse::error(
                 ApiMessages::TOKEN_INVALID,
-                StatusCodes::UNAUTHORIZED
+                StatusCodes::UNAUTHORIZED,
+                $e->getMessage()
             );
         });
     })->create();

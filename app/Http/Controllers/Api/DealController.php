@@ -1,5 +1,6 @@
 <?php
-namespace App\Http\Controllers\Api;
+
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Deal\StoreDealRequest;
@@ -16,10 +17,10 @@ class DealController extends Controller
         $this->dealService = $dealService;
     }
 
-    public function index(Request $request) 
-    { 
+    public function index(Request $request)
+    {
         $perPage = $request->query('per_page', 10);
-        return $this->dealService->getAll($perPage); 
+        return $this->dealService->getAll($perPage);
     }
 
     public function store(StoreDealRequest $request)
@@ -27,9 +28,9 @@ class DealController extends Controller
         return $this->dealService->create($request->validated());
     }
 
-    public function show($id) 
-    { 
-        return $this->dealService->getById($id); 
+    public function show($id)
+    {
+        return $this->dealService->getById($id);
     }
 
     public function update(UpdateDealRequest $request, $id)
@@ -37,8 +38,8 @@ class DealController extends Controller
         return $this->dealService->update($id, $request->validated());
     }
 
-    public function destroy($id) 
-    { 
-        return $this->dealService->delete($id); 
+    public function destroy($id)
+    {
+        return $this->dealService->delete($id);
     }
 }

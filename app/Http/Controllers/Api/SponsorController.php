@@ -1,5 +1,6 @@
 <?php
-namespace App\Http\Controllers\Api;
+
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Sponsor\StoreSponsorRequest;
@@ -16,9 +17,8 @@ class SponsorController extends Controller
         $this->sponsorService = $sponsorService;
     }
 
-    public function index(Request $request) 
-    { 
-        // return $this->sponsorService->getAll(); 
+    public function index(Request $request)
+    {
         $perPage = $request->query('per_page', 10);
         return $this->sponsorService->getAll($perPage);
     }
@@ -28,9 +28,9 @@ class SponsorController extends Controller
         return $this->sponsorService->create($request->validated());
     }
 
-    public function show($id) 
-    { 
-        return $this->sponsorService->getById($id); 
+    public function show($id)
+    {
+        return $this->sponsorService->getById($id);
     }
 
     public function update(UpdateSponsorRequest $request, $id)
@@ -38,8 +38,8 @@ class SponsorController extends Controller
         return $this->sponsorService->update($id, $request->validated());
     }
 
-    public function destroy($id) 
+    public function destroy($id)
     {
-         return $this->sponsorService->delete($id); 
+        return $this->sponsorService->delete($id);
     }
 }
