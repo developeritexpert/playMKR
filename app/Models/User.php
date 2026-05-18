@@ -40,4 +40,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function sponsor()
+    {
+        return $this->hasOne(Sponsor::class);
+    }
 }

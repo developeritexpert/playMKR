@@ -9,14 +9,22 @@ use App\Helpers\ApiResponse;
 use App\Repositories\Contracts\SponserRepositoryInterface;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewSponsorRequestMail;
+use App\Mail\SponsorApprovedMail;
+use App\Mail\SponsorRejectedMail;
+use App\Repositories\Contracts\UserRepositoryInterface;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
 
 class SponserService
 {
     protected SponserRepositoryInterface $sponserRepo;
+    protected UserRepositoryInterface $userRepo;
 
-    public function __construct(SponserRepositoryInterface $sponserRepo)
+    public function __construct(SponserRepositoryInterface $sponserRepo , UserRepositoryInterface $userRepo)
     {
         $this->sponserRepo = $sponserRepo;
+        $this->userRepo = $userRepo;
     }
 
     public function sponserRequest(array $data)
@@ -69,7 +77,23 @@ class SponserService
                 );
             }
 
+            // Genrtwea password
+            $password = Str::random(10);
+
+            // Create user
+            $user = $this->userRepo->create([
+                'name' => $sponsor->name,
+                'email' => $sponsor->email,
+                'password' => $password,
+                'role_id' => 2,
+
+            ]);
+
+            // Sponser (Sponser Table)
+
             $updatedSponsor = $this->sponserRepo->update($sponsor, ['status' => 'approved']);
+
+            Mail::to($user->email)->send(new SponsorApprovedMail($sponsor, $password));
             return ApiResponse::success(
                 $updatedSponsor,
                 ApiMessages::SPONSER_APPROVED,
@@ -100,6 +124,7 @@ class SponserService
                 $sponsor,
                 ['status' => 'rejected']
             );
+            Mail::to($updatedSponsor->email)->send(new SponsorRejectedMail($updatedSponsor));
             return ApiResponse::success(
                 $updatedSponsor,
                 ApiMessages::SPONSER_REJECTED,
