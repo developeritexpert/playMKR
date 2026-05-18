@@ -46,6 +46,12 @@ class SponsorService
     public function create(array $data)
     {
         try {
+            $user = auth()->user();
+            if ($user) {
+                $data['user_id'] = $user->id;
+            } else {
+                return ApiResponse::error('Unauthenticated', 401);
+            }
             $sponsor = $this->sponsorRepo->create($data);
             return ApiResponse::success($sponsor, ApiMessages::SPONSOR_CREATED, StatusCodes::CREATED);
         } catch (Exception $e) {

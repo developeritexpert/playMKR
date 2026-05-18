@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\NewSponsorRequestMail;
 use App\Mail\SponsorApprovedMail;
 use App\Mail\SponsorRejectedMail;
+use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -77,21 +78,30 @@ class SponserService
                 );
             }
 
-            // Genrtwea password
+            $existingUser = User::where('email', $sponsor->email)->first();
+            if ($existingUser) {
+                return ApiResponse::error(
+                    ApiMessages::EMAIL_APPROVED,
+                    StatusCodes::UNPROCESSABLE_ENTITY
+                );
+            }
+
+            // Generate password
             $password = Str::random(10);
 
-            // Create user
+            // Create sponser user
             $user = $this->userRepo->create([
                 'name' => $sponsor->name,
                 'email' => $sponsor->email,
                 'password' => $password,
                 'role_id' => 2,
-
             ]);
 
-            // Sponser (Sponser Table)
-
-            $updatedSponsor = $this->sponserRepo->update($sponsor, ['status' => 'approved']);
+            $updatedSponsor = $this->sponserRepo->update($sponsor, 
+            [
+                'status' => 'approved',
+                 'user_id' => $user->id,
+            ]);
 
             Mail::to($user->email)->send(new SponsorApprovedMail($sponsor, $password));
             return ApiResponse::success(

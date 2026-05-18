@@ -50,4 +50,6 @@ class ApiMessages
     const SPONSER_NOT_FOUND = 'Sponsor Not Found';
     const SPONSER_APPROVED = 'Sponsor Approved Successfully';
     const SPONSER_REJECTED = 'Sponser Rejected';
+
+    const EMAIL_APPROVED = 'Email already approved';
 }
