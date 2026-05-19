@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\SponserApplications;
+use App\Models\Sponsor;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -13,7 +14,7 @@ class SponsorRejectedMail extends Mailable
 
     public $sponsor;
 
-    public function __construct(SponserApplications $sponsor)
+    public function __construct(Sponsor $sponsor)
     {
         $this->sponsor = $sponsor;
     }

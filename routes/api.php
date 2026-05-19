@@ -21,11 +21,11 @@ Route::post('/sponser-request', [SponserController::class, 'sponserRequestApplic
 Route::middleware(['auth:api'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    Route::get('/sponsor/all', [SponsorController::class, 'index']);
-    Route::post('sponsor/add', [SponsorController::class, 'store']);
-    Route::get('sponsor/{id}', [SponsorController::class, 'show']);
-    Route::put('update/sponsor/{id}', [SponsorController::class, 'update']);
-    Route::delete('delete/sponsor/{id}', [SponsorController::class, 'destroy']);
+    Route::get('/sponsor/all', [SponserController::class, 'index']);
+    Route::post('sponsor/add', [SponserController::class, 'store']);
+    Route::get('sponsor/{id}', [SponserController::class, 'show']);
+    Route::put('update/sponsor/{id}', [SponserController::class, 'update']);
+    Route::delete('delete/sponsor/{id}', [SponserController::class, 'destroy']);
 
     Route::get('deal/all', [DealController::class, 'index']);
     Route::post('deal/add', [DealController::class, 'store']);
@@ -38,5 +38,5 @@ Route::middleware(['auth:api'])->group(function () {
         Route::post('/approve-sponser', [SponserController::class, 'approveSponser']);
         Route::post('/reject-sponser', [SponserController::class, 'rejectSponser']);
     });
-    Route::post('/logout', [AuthController::class, 'logout']);
+    
 });

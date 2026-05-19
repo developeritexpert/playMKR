@@ -1,39 +1,55 @@
 <?php
-namespace App\Repositories;
+// namespace App\Repositories;
 
-use App\Models\Sponsor;
-use App\Repositories\Contracts\SponsorRepositoryInterface;
+// use App\Models\Sponsor;
+// use App\Repositories\Contracts\SponsorRepositoryInterface;
 
-class SponsorRepository implements SponsorRepositoryInterface
-{
-    public function paginate($perPage = 10)
-    {
-    return Sponsor::latest()->paginate($perPage);
-    }
+// class SponsorRepository implements SponsorRepositoryInterface
+// {
+//     public function paginate($perPage = 10)
+//     {
+//     return Sponsor::latest()->paginate($perPage);
+//     }
 
-    public function all()
-    {
-        return Sponsor::all();
-    }
+//     public function all()
+//     {
+//         return Sponsor::all();
+//     }
 
-    public function find(int $id)
-    {
-        return Sponsor::find($id);
-    }
+//     public function find(int $id)
+//     {
+//         return Sponsor::find($id);
+//     }
 
-    public function create(array $data)
-    {
-        return Sponsor::create($data);
-    }
+//     public function create(array $data)
+//     {
+//         return Sponsor::create($data);
+//     }
 
-    public function update(Sponsor $sponsor, array $data)
-    {
-        $sponsor->update($data);
-        return $sponsor;
-    }
+//     public function update(Sponsor $sponsor, array $data)
+//     {
+//         $sponsor->update($data);
+//         return $sponsor;
+//     }
 
-    public function delete(Sponsor $sponsor)
-    {
-        return $sponsor->delete();
-    }
-}
+//     public function delete(Sponsor $sponsor)
+//     {
+//         return $sponsor->delete();
+//     }
+
+//     public function addSponserApplicationRequest(array $data)
+//     {
+//         return Sponsor::create($data);
+//     }
+
+//     public function getAllSponserApplications()
+//     {
+//         return Sponsor::all();
+//     }
+
+//     public function getByStatus(string $status)
+//     {
+//         return Sponsor::where('status', $status)->get();
+//     }
+
+// }

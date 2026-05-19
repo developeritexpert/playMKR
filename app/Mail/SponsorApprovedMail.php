@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\SponserApplications;
+use App\Models\Sponsor;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -14,7 +15,7 @@ class SponsorApprovedMail extends Mailable
     public $sponsor;
     public $password;
 
-    public function __construct(SponserApplications $sponsor, $password)
+    public function __construct(Sponsor $sponsor, $password)
     {
         $this->sponsor = $sponsor;
         $this->password = $password;
@@ -29,5 +30,4 @@ class SponsorApprovedMail extends Mailable
                 'password' => $this->password
             ]);
     }
-
 }

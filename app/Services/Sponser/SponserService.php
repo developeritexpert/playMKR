@@ -22,10 +22,88 @@ class SponserService
     protected SponserRepositoryInterface $sponserRepo;
     protected UserRepositoryInterface $userRepo;
 
-    public function __construct(SponserRepositoryInterface $sponserRepo , UserRepositoryInterface $userRepo)
+    public function __construct(SponserRepositoryInterface $sponserRepo, UserRepositoryInterface $userRepo)
     {
         $this->sponserRepo = $sponserRepo;
         $this->userRepo = $userRepo;
+    }
+
+    public function getAll($perPage = 10)
+    {
+        try {
+
+            $sponsors = $this->sponserRepo->paginate($perPage);
+            return ApiResponse::success($sponsors, ApiMessages::SPONSORS_FETCHED);
+        } catch (Exception $e) {
+            return ApiResponse::error(ApiMessages::ERROR, StatusCodes::SERVER_ERROR, $e->getMessage());
+        }
+    }
+
+    public function getById(int $id)
+    {
+        try {
+            $sponsor = $this->sponserRepo->find($id);
+
+            if (!$sponsor) {
+                return ApiResponse::error(ApiMessages::SPONSOR_NOT_FOUND, StatusCodes::NOT_FOUND);
+            }
+
+            return ApiResponse::success($sponsor, ApiMessages::SPONSOR_FETCHED);
+        } catch (Exception $e) {
+            return ApiResponse::error(ApiMessages::ERROR, StatusCodes::SERVER_ERROR, $e->getMessage());
+        }
+    }
+
+    public function create(array $data)
+    {
+        try {
+            $user = auth()->user();
+            if ($user) {
+                $data['user_id'] = $user->id;
+            } else {
+                return ApiResponse::error( 
+                    ApiMessages::UNAUTHORIZED,
+                    StatusCodes::UNAUTHORIZED);
+            }
+            $sponsor = $this->sponserRepo->create($data);
+            return ApiResponse::success($sponsor, ApiMessages::SPONSOR_CREATED, StatusCodes::CREATED);
+        } catch (Exception $e) {
+            return ApiResponse::error(ApiMessages::ERROR, StatusCodes::SERVER_ERROR, $e->getMessage());
+        }
+    }
+
+    public function update(int $id, array $data)
+    {
+        try {
+            $sponsor = $this->sponserRepo->find($id);
+
+            if (!$sponsor) {
+                return ApiResponse::error(ApiMessages::SPONSOR_NOT_FOUND, StatusCodes::NOT_FOUND);
+            }
+
+            $updatedSponsor = $this->sponserRepo->update($sponsor, $data);
+            return ApiResponse::success($updatedSponsor,
+             ApiMessages::SPONSOR_UPDATED
+            );
+        } catch (Exception $e) {
+            return ApiResponse::error(ApiMessages::ERROR, StatusCodes::SERVER_ERROR, $e->getMessage());
+        }
+    }
+
+    public function delete(int $id)
+    {
+        try {
+            $sponsor = $this->sponserRepo->find($id);
+
+            if (!$sponsor) {
+                return ApiResponse::error(ApiMessages::SPONSOR_NOT_FOUND, StatusCodes::NOT_FOUND);
+            }
+
+            $this->sponserRepo->delete($sponsor);
+            return ApiResponse::success(null, ApiMessages::SPONSOR_DELETED);
+        } catch (Exception $e) {
+            return ApiResponse::error(ApiMessages::ERROR, StatusCodes::SERVER_ERROR, $e->getMessage());
+        }
     }
 
     public function sponserRequest(array $data)
@@ -96,12 +174,13 @@ class SponserService
                 'password' => $password,
                 'role_id' => 2,
             ]);
-
-            $updatedSponsor = $this->sponserRepo->update($sponsor, 
-            [
-                'status' => 'approved',
-                 'user_id' => $user->id,
-            ]);
+            $updatedSponsor = $this->sponserRepo->update(
+                $sponsor,
+                [
+                    'status' => 'approved',
+                    'user_id' => $user->id,
+                ]
+            );
 
             Mail::to($user->email)->send(new SponsorApprovedMail($sponsor, $password));
             return ApiResponse::success(
