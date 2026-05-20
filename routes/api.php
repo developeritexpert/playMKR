@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\DealController;
-use App\Http\Controllers\Api\SponsorController;
+use App\Http\Controllers\Deal\DealController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Sponser\SponserController;
 use Illuminate\Http\Request;
@@ -11,6 +10,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
 
+//Auth Routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);

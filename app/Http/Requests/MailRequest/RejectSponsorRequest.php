@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Sponsor;
+namespace App\Http\Requests\MailRequest;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;

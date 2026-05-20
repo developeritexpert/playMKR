@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Deal;
 
 use App\Repositories\Contracts\DealRepositoryInterface;
 use App\Helpers\ApiResponse;

@@ -13,9 +13,9 @@ use App\Mail\SponsorApprovedMail;
 use App\Mail\SponsorRejectedMail;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-
 
 class SponserService
 {
@@ -31,7 +31,6 @@ class SponserService
     public function getAll($perPage = 10)
     {
         try {
-
             $sponsors = $this->sponserRepo->paginate($perPage);
             return ApiResponse::success($sponsors, ApiMessages::SPONSORS_FETCHED);
         } catch (Exception $e) {
@@ -57,13 +56,14 @@ class SponserService
     public function create(array $data)
     {
         try {
-            $user = auth()->user();
+            $user = Auth::user();
             if ($user) {
                 $data['user_id'] = $user->id;
             } else {
-                return ApiResponse::error( 
+                return ApiResponse::error(
                     ApiMessages::UNAUTHORIZED,
-                    StatusCodes::UNAUTHORIZED);
+                    StatusCodes::UNAUTHORIZED
+                );
             }
             $sponsor = $this->sponserRepo->create($data);
             return ApiResponse::success($sponsor, ApiMessages::SPONSOR_CREATED, StatusCodes::CREATED);
@@ -82,9 +82,7 @@ class SponserService
             }
 
             $updatedSponsor = $this->sponserRepo->update($sponsor, $data);
-            return ApiResponse::success($updatedSponsor,
-             ApiMessages::SPONSOR_UPDATED
-            );
+            return ApiResponse::success($updatedSponsor, ApiMessages::SPONSOR_UPDATED);
         } catch (Exception $e) {
             return ApiResponse::error(ApiMessages::ERROR, StatusCodes::SERVER_ERROR, $e->getMessage());
         }
@@ -98,7 +96,6 @@ class SponserService
             if (!$sponsor) {
                 return ApiResponse::error(ApiMessages::SPONSOR_NOT_FOUND, StatusCodes::NOT_FOUND);
             }
-
             $this->sponserRepo->delete($sponsor);
             return ApiResponse::success(null, ApiMessages::SPONSOR_DELETED);
         } catch (Exception $e) {
@@ -112,7 +109,6 @@ class SponserService
             $addSponsorApplication = $this->sponserRepo->addSponserApplicationRequest($data);
             $adminEmail = config('mail.admin_email', 'manjeetsingh90692@gmail.com');
             Mail::to($adminEmail)->send(new NewSponsorRequestMail($addSponsorApplication));
-
             return ApiResponse::success(
                 $addSponsorApplication,
                 ApiMessages::SPONSER_REQUEST_SUCCESS,
@@ -148,15 +144,15 @@ class SponserService
     public function approveSponsor(int $id)
     {
         try {
-            $sponsor = $this->sponserRepo->find($id);
-            if (!$sponsor) {
+            $sponsorApplication = $this->sponserRepo->findApplicationById($id);
+            if (!$sponsorApplication) {
                 return ApiResponse::error(
-                    ApiMessages::SPONSOR_NOT_FOUND,
+                    ApiMessages::SPONSER_NOT_FOUND,
                     StatusCodes::NOT_FOUND
                 );
             }
 
-            $existingUser = User::where('email', $sponsor->email)->first();
+            $existingUser = User::where('email', $sponsorApplication->email)->first();
             if ($existingUser) {
                 return ApiResponse::error(
                     ApiMessages::EMAIL_APPROVED,
@@ -167,24 +163,40 @@ class SponserService
             // Generate password
             $password = Str::random(10);
 
-            // Create sponser user
+            // Create sponsor user
             $user = $this->userRepo->create([
-                'name' => $sponsor->name,
-                'email' => $sponsor->email,
+                'name' => $sponsorApplication->name,
+                'email' => $sponsorApplication->email,
                 'password' => $password,
                 'role_id' => 2,
             ]);
-            $updatedSponsor = $this->sponserRepo->update(
-                $sponsor,
+
+            $sponsor = $this->sponserRepo->create([
+                'user_id'         => $user->id,
+                'name'            => $sponsorApplication->name,
+                'company_name'    => $sponsorApplication->company_name,
+                'sponser_name'    => $sponsorApplication->name,
+                'industry'        => $sponsorApplication->industry,
+                'website'         => $sponsorApplication->website_url,
+                'primary_contact' => $sponsorApplication->contact_number,
+                'email'           => $sponsorApplication->email,
+                'phone'           => $sponsorApplication->contact_number,
+                'location'        => $sponsorApplication->address,
+            ]);
+
+            // Update sponsor application status
+            $updatedApplication = $this->sponserRepo->update(
+                $sponsorApplication,
                 [
                     'status' => 'approved',
                     'user_id' => $user->id,
                 ]
             );
 
-            Mail::to($user->email)->send(new SponsorApprovedMail($sponsor, $password));
+            Mail::to($user->email)->send(new SponsorApprovedMail($sponsorApplication, $password));
+
             return ApiResponse::success(
-                $updatedSponsor,
+                $updatedApplication,
                 ApiMessages::SPONSER_APPROVED,
                 StatusCodes::OK
             );
@@ -200,9 +212,10 @@ class SponserService
     public function rejectSponsor(int $id)
     {
         try {
-            $sponsor = $this->sponserRepo->find($id);
+            // $sponsor = $this->sponserRepo->find($id);
+            $sponsorApplication = $this->sponserRepo->findApplicationById($id);
 
-            if (!$sponsor) {
+            if (!$sponsorApplication) {
                 return ApiResponse::error(
                     ApiMessages::SPONSER_NOT_FOUND,
                     StatusCodes::NOT_FOUND
@@ -210,7 +223,7 @@ class SponserService
             }
 
             $updatedSponsor = $this->sponserRepo->update(
-                $sponsor,
+                $sponsorApplication,
                 ['status' => 'rejected']
             );
             Mail::to($updatedSponsor->email)->send(new SponsorRejectedMail($updatedSponsor));

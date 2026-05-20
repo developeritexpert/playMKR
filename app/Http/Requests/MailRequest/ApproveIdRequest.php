@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Sponsor;
+namespace App\Http\Requests\MailRequest;
 
 use App\Constants\ApiMessages;
 use App\Constants\StatusCodes;

@@ -12,11 +12,11 @@ class SponsorRejectedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $sponsor;
+    public $sponsorApplication;
 
-    public function __construct(Sponsor $sponsor)
+    public function __construct(SponserApplications $sponsorApplication)
     {
-        $this->sponsor = $sponsor;
+        $this->sponsorApplication = $sponsorApplication;
     }
 
     public function build()
@@ -24,7 +24,7 @@ class SponsorRejectedMail extends Mailable
         return $this->subject('Sponsor Request Rejected')
             ->view('emails.sponsor-rejected')
             ->with([
-                'sponsor' => $this->sponsor
+                'sponsor' => $this->sponsorApplication
             ]);
     }
 }

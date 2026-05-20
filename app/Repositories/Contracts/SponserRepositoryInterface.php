@@ -2,8 +2,6 @@
 
 namespace App\Repositories\Contracts;
 
-use App\Models\Sponsor;
-
 interface SponserRepositoryInterface
 {
     public function addSponserApplicationRequest(array $data);
@@ -16,4 +14,5 @@ interface SponserRepositoryInterface
     public function update($model, array $data);
     public function delete($model);
     public function paginate(int $perPage = 10);
+    public function findApplicationById(int $id);
 }

@@ -54,4 +54,9 @@ class SponserRepository implements SponserRepositoryInterface
     {
         return $model->delete();
     }
+
+    public function findApplicationById(int $id)
+    {
+        return SponserApplications::find($id);
+    }
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Deal;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Deal\StoreDealRequest;
 use App\Http\Requests\Deal\UpdateDealRequest;
-use App\Services\DealService;
+use App\Services\Deal\DealService;
 use Illuminate\Http\Request;
 
 class DealController extends Controller

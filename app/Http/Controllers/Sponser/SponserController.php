@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Sponser;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Sponsor\RejectSponsorRequest;
+use App\Http\Requests\MailRequest\RejectSponsorRequest;
 use App\Http\Requests\Sponsor\SponserApplicationRequest;
 use App\Services\Sponser\SponserService;
-use App\Http\Requests\Sponsor\ApproveIdRequest;
+use App\Http\Requests\MailRequest\ApproveIdRequest;
 use App\Http\Requests\Sponsor\StoreSponsorRequest;
 use App\Http\Requests\Sponsor\UpdateSponsorRequest;
 use Illuminate\Http\Request;
