@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Deal\DealController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\DealType\DealTypeController;
 use App\Http\Controllers\Sponser\SponserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,12 +29,21 @@ Route::middleware(['auth:api'])->group(function () {
     Route::delete('delete/sponsor/{id}', [SponserController::class, 'destroy']);
 
     Route::get('deal/all', [DealController::class, 'index']);
-    Route::post('deal/add', [DealController::class, 'store']);
-    Route::get('deal/{id}', [DealController::class, 'show']);
-    Route::put('update/deal/{id}', [DealController::class, 'update']);
-    Route::delete('delete/deal/{id}', [DealController::class, 'destroy']);
 
     Route::middleware(['role:admin'])->group(function () {
+        // Deal Add and Manged by Admin
+        Route::post('deal/add', [DealController::class, 'store']);
+        Route::get('deal/{id}', [DealController::class, 'show']);
+        Route::put('update/deal/{id}', [DealController::class, 'update']);
+        Route::delete('delete/deal/{id}', [DealController::class, 'destroy']);
+
+        // Route to manage Deal type
+        Route::get('deal-type/all', [DealTypeController::class, 'index']);
+        Route::post('deal-type/add', [DealTypeController::class, 'store']);
+        Route::get('deal-type/{id}', [DealTypeController::class, 'show']);
+        Route::put('deal-type/update/{id}', [DealTypeController::class, 'update']);
+        Route::delete('deal-type/delete/{id}', [DealTypeController::class, 'destroy']);
+        
         Route::get('/all-sponsers-request', [SponserController::class, 'getSponserRequestApplication']);
         Route::post('/approve-sponser', [SponserController::class, 'approveSponser']);
         Route::post('/reject-sponser', [SponserController::class, 'rejectSponser']);

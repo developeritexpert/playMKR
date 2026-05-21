@@ -52,4 +52,11 @@ class ApiMessages
     const SPONSER_REJECTED = 'Sponser Rejected';
 
     const EMAIL_APPROVED = 'Email already approved';
+
+    const DEAL_TYPES_FETCHED = "Deal types fetched successfully";
+    const DEAL_TYPE_FETCHED = "Deal type fetched successfully";
+    const DEAL_TYPE_CREATED = "Deal type created successfully";
+    const DEAL_TYPE_UPDATED = "Deal type updated successfully";
+    const DEAL_TYPE_DELETED = "Deal type deleted successfully";
+    const DEAL_TYPE_NOT_FOUND = "Deal type not found";
 }

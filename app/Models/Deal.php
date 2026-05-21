@@ -10,11 +10,22 @@ class Deal extends Model
             'sponsor_id',
             'deal_title',
             'deal_description',
-            'deal_type',
+            // 'deal_type',
             'status', 
+            'deal_type_id',
     ];
 
     public function sponser(){
         return $this->belongsTo(Sponsor::class);
+    }
+
+    public function dealType()
+    {
+        return $this->belongsTo(DealType::class);
+    }
+
+    public function deliverables()
+    {
+        return $this->hasMany(Deliverable::class);
     }
 }
