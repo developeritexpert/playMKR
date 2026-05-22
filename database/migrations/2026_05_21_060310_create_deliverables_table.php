@@ -11,12 +11,11 @@ return new class extends Migration
         Schema::create('deliverables', function (Blueprint $table) {
             $table->id();
             $table->foreignId('deal_id')->constrained('deals')->onDelete('cascade');
+            $table->foreignId('deliver_type_id')->constrained('deliver_types')->onDelete('cascade');
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('type')->nullable();
-            $table->integer('quantity')->default(1);
+            $table->string('quantity')->nullable();
             $table->string('attachment')->nullable();
-            // $table->enum('type', ['Post', 'Video', 'Campaign'])->default('Post');
             $table->timestamps();
         });
     }

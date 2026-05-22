@@ -44,24 +44,6 @@ class DealService
         }
     }
 
-    // public function create(array $data)
-    // {
-    //     try {
-    //         if (isset($data['deal_type'])) {
-    //             $dealType = DealType::firstOrCreate(
-    //                 ['slug' => Str::slug($data['deal_type'])],
-    //                 ['name' => $data['deal_type']]
-    //             );
-
-    //             $data['deal_type_id'] = $dealType->id;
-    //         }
-    //         $deal = $this->dealRepo->create($data);
-    //         return ApiResponse::success($deal, ApiMessages::DEAL_CREATED, StatusCodes::CREATED);
-    //     } catch (Exception $e) {
-    //         return ApiResponse::error(ApiMessages::ERROR, StatusCodes::SERVER_ERROR, $e->getMessage());
-    //     }
-    // }
-
     public function create(array $data)
 {
     try {
@@ -83,27 +65,6 @@ class DealService
         return ApiResponse::error(ApiMessages::ERROR, StatusCodes::SERVER_ERROR, $e->getMessage());
     }
 }
-
-    // public function update(int $id, array $data)
-    // {
-    //     try {
-    //         $deal = $this->dealRepo->find($id);
-    //         if (!$deal) {
-    //             return ApiResponse::error(ApiMessages::DEAL_NOT_FOUND, StatusCodes::NOT_FOUND);
-    //         }
-    //         if (isset($data['deal_type'])) {
-    //             $dealType = DealType::firstOrCreate(['slug' => $data['deal_type']]);
-    //             $data['deal_type_id'] = $dealType->id;
-    //             unset($data['deal_type']);
-
-    //             $data['deal_type'] = $dealType->slug;
-    //         }
-    //         $updatedDeal = $this->dealRepo->update($deal, $data);
-    //         return ApiResponse::success($updatedDeal, ApiMessages::DEAL_UPDATED);
-    //     } catch (Exception $e) {
-    //         return ApiResponse::error(ApiMessages::ERROR, StatusCodes::SERVER_ERROR, $e->getMessage());
-    //     }
-    // }
 
     public function update(int $id, array $data)
 {

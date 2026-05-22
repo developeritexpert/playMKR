@@ -59,4 +59,17 @@ class ApiMessages
     const DEAL_TYPE_UPDATED = "Deal type updated successfully";
     const DEAL_TYPE_DELETED = "Deal type deleted successfully";
     const DEAL_TYPE_NOT_FOUND = "Deal type not found";
+
+    const DELIVERABLE_CREATED = 'Deliverable created successfully';
+    const DELIVERABLE_UPDATED = 'Deliverable updated successfully';
+    const DELIVERABLE_DELETED = 'Deliverable deleted successfully';
+    const DELIVERABLE_FETCHED = 'Deliverable fetched successfully';
+    const DELIVERABLES_FETCHED = 'Deliverables fetched successfully';
+    const DELIVERABLE_NOT_FOUND = 'Deliverable not found';
+
+    const DELIVER_TYPE_CREATED = 'Deliver type created successfully';
+    const DELIVER_TYPE_UPDATED = 'Deliver type updated successfully';
+    const DELIVER_TYPE_DELETED = 'Deliver type deleted successfully';
+    const DELIVER_TYPE_LIST = 'Deliver type list fetched successfully';
+    const DELIVER_TYPE_NOT_FOUND = 'Deliver type not found';
 }

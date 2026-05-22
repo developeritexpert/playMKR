@@ -22,10 +22,5 @@ class Deal extends Model
     public function dealType()
     {
         return $this->belongsTo(DealType::class);
-    }
-
-    public function deliverables()
-    {
-        return $this->hasMany(Deliverable::class);
-    }
+    } 
 }

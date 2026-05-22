@@ -8,14 +8,20 @@ class Deliverable extends Model
 {
     protected $fillable = [
         'deal_id',
+        'deliver_type_id',
         'title',
         'description',
-        'type',
         'quantity',
-        'upload_attachment',
+        'attachment'
     ];
 
-    public function deal(){
-        return $this->belongTo(Deal::class);
+    public function deal()
+    {
+        return $this->belongsTo(Deal::class);
+    }
+
+    public function deliverType()
+    {
+        return $this->belongsTo(DeliverType::class);
     }
 }

@@ -12,4 +12,9 @@ class DealType extends Model
     {
         return $this->hasMany(Deal::class);
     }
+
+    public function deliverables()
+    {
+        return $this->hasMany(Deliverable::class);
+    }
 }
