@@ -168,7 +168,7 @@ class SponserService
                 'name' => $sponsorApplication->name,
                 'email' => $sponsorApplication->email,
                 'password' => $password,
-                'role_id' => 2,
+                'role_id' => 3,
             ]);
 
             $sponsor = $this->sponserRepo->create([

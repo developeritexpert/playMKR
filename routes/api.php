@@ -7,6 +7,7 @@ use App\Http\Controllers\Deliverable\DeliverableController;
 use App\Http\Controllers\Sponser\SponserController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\DeliverType\DeliverTypeController;
+use App\Http\Controllers\Profile\SettingsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
@@ -19,6 +20,7 @@ Route::get('/user', function (Request $request) {
     Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
+    // Route to become Sposner
     Route::post('/sponser-request', [SponserController::class, 'sponserRequestApplication']);
 
     Route::middleware(['auth:api'])->group(function () {
@@ -33,7 +35,6 @@ Route::get('/user', function (Request $request) {
 
         // Get All Deals
         Route::get('deal/all', [DealController::class, 'index']);
-
 
     Route::middleware(['role:admin'])->group(function () {
         // Deal Add and Manged by Admin
@@ -68,4 +69,9 @@ Route::get('/user', function (Request $request) {
         Route::put('deliver-type/update/{id}', [DeliverTypeController::class, 'update']);
         Route::delete('deliver-type/delete/{id}', [DeliverTypeController::class, 'destroy']);
         });
+
+        // Route for update Profile Information
+        Route::get('settings', [SettingsController::class, 'show']);
+        Route::put('settings/profile/update', [SettingsController::class, 'update']);
+        Route::put('settings/passwordupdate', [SettingsController::class, 'updatePassword']);
     });

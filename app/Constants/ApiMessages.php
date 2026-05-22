@@ -72,4 +72,7 @@ class ApiMessages
     const DELIVER_TYPE_DELETED = 'Deliver type deleted successfully';
     const DELIVER_TYPE_LIST = 'Deliver type list fetched successfully';
     const DELIVER_TYPE_NOT_FOUND = 'Deliver type not found';
+
+    const PROFILE_UPDATED = 'Profile updated successfully';
+    const INVALID_CURRENT_PASSWORD = 'Current password is incorrect';
 }

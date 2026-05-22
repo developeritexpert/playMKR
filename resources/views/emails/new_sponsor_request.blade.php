@@ -257,7 +257,7 @@
       <div class="detail-row">
         <div class="detail-meta">
           <span class="detail-label">Email: </span>
-          <span class="detail-value">{{ $sponsorData['email'] ?? 'N/A' }}</span>
+          <span class="detail-value email-link">{{ $sponsorData['email'] ?? 'N/A' }}</span>
         </div>
       </div>
 
