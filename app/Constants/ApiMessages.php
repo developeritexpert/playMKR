@@ -75,4 +75,12 @@ class ApiMessages
 
     const PROFILE_UPDATED = 'Profile updated successfully';
     const INVALID_CURRENT_PASSWORD = 'Current password is incorrect';
+
+    // Internal Team 
+    const INTERNAL_TEAM_CREATED = 'Internal team member created successfully';
+    const INTERNAL_TEAM_FETCHED = 'Internal team members fetched successfully';
+    const INTERNAL_TEAM_NOT_FOUND = 'Internal team member not found';
+    const INTERNAL_TEAM_UPDATED = 'Internal team member updated successfully';
+    const INTERNAL_TEAM_DELETED = 'Internal team member deleted successfully';
+    const INTERNAL_TEAM_EMAIL_EXISTS = 'Email already exists';
 }

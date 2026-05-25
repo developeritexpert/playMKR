@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Repositories\Contracts\DealRepositoryInterface;
 use App\Repositories\Contracts\DealTypeRepositoryInterface;
 use App\Repositories\Contracts\DeliverableRepositoryInterface;
+use App\Repositories\Contracts\InternalTeamRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\DealRepository;
@@ -13,6 +14,7 @@ use App\Repositories\DeliverableRepository;
 use App\Repositories\Eloquent\DealTypeRepository;
 use App\Repositories\Eloquent\SponserRepository;
 use App\Repositories\Eloquent\UserRepository;
+use App\Repositories\InternalTeamRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(SponserRepositoryInterface::class, SponserRepository::class);
         $this->app->bind(DealTypeRepositoryInterface::class, DealTypeRepository::class);
         $this->app->bind(DeliverableRepositoryInterface::class, DeliverableRepository::class);
+        $this->app->bind(InternalTeamRepositoryInterface::class,InternalTeamRepository::class
+        );
 
     }
 }

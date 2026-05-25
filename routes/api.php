@@ -7,6 +7,7 @@ use App\Http\Controllers\Deliverable\DeliverableController;
 use App\Http\Controllers\Sponser\SponserController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\DeliverType\DeliverTypeController;
+use App\Http\Controllers\InternalTeam\InternalTeamController;
 use App\Http\Controllers\Profile\SettingsController;
 use Illuminate\Support\Facades\Route;
 
@@ -74,4 +75,11 @@ Route::get('/user', function (Request $request) {
         Route::get('settings', [SettingsController::class, 'show']);
         Route::put('settings/profile/update', [SettingsController::class, 'update']);
         Route::put('settings/passwordupdate', [SettingsController::class, 'updatePassword']);
+
+        // Internal Team
+        Route::get('internal-team/all',[InternalTeamController::class, 'index']);
+        Route::post('internal-team/add', [InternalTeamController::class, 'store']);
+        Route::get('internal-team/{id}',[InternalTeamController::class, 'show']);
+        Route::put('internal-team/{id}',[InternalTeamController::class, 'update']);
+        Route::delete('internal-team/{id}',[InternalTeamController::class, 'destroy']);
     });
