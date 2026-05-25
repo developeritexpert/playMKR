@@ -44,6 +44,10 @@ class SettingsService
                 $user->sponsor()->updateOrCreate([], $sponsorData);
             }
         }
+          // Convert avatar to full URL
+    // if ($updatedUser && $updatedUser->avatar) {
+    //     $updatedUser->avatar = asset('storage/' . $updatedUser->avatar);
+    // }
 
         return ApiResponse::success($updatedUser, ApiMessages::PROFILE_UPDATED, StatusCodes::OK);
     }

@@ -23,7 +23,6 @@ class UpdateProfileRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $userId,
             'phone' => 'nullable|string|max:20',
-            // profile logo
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', 
         ];
     }
