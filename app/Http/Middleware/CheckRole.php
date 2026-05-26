@@ -24,11 +24,14 @@ class CheckRole
             );
         }
 
+
         $allowedRoles = collect($roles)
             ->map(function ($role) {
                 return constant(Roles::class . '::' . strtoupper($role));
             })
             ->toArray();
+
+        
 
         if (!in_array($user->role_id, $allowedRoles)) {
             return ApiResponse::error(
