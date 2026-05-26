@@ -15,77 +15,59 @@ class InvoiceService
         $this->invoiceRepo = $invoiceRepo;
     }
 
-    public function index()
-    {
+    public function index(){
         $invoices = $this->invoiceRepo->getAll();
-
-        return ApiResponse::success(
-            $invoices,
+        return ApiResponse::success($invoices,
             ApiMessages::INVOICE_LIST,
             StatusCodes::OK
         );
     }
 
-    public function show($id)
-    {
+    public function show($id){
         $invoice = $this->invoiceRepo->findById($id);
-
         if (!$invoice) {
             return ApiResponse::error(
                 ApiMessages::INVOICE_NOT_FOUND,
                 StatusCodes::NOT_FOUND
             );
         }
-
-        return ApiResponse::success(
-            $invoice,
+        return ApiResponse::success($invoice,
             ApiMessages::INVOICE_FETCHED,
             StatusCodes::OK
         );
     }
 
-    public function store(array $data)
-    {
+    public function store(array $data){
         $invoice = $this->invoiceRepo->create($data);
-
-        return ApiResponse::success(
-            $invoice,
+        return ApiResponse::success($invoice,
             ApiMessages::INVOICE_CREATED,
             StatusCodes::CREATED
         );
     }
 
-    public function update($id, array $data)
-    {
+    public function update($id, array $data){
         $invoice = $this->invoiceRepo->update($id, $data);
-
         if (!$invoice) {
             return ApiResponse::error(
                 ApiMessages::INVOICE_NOT_FOUND,
                 StatusCodes::NOT_FOUND
             );
         }
-
-        return ApiResponse::success(
-            $invoice,
+        return ApiResponse::success($invoice,
             ApiMessages::INVOICE_UPDATED,
             StatusCodes::OK
         );
     }
 
-    public function destroy($id)
-    {
+    public function destroy($id){
         $deleted = $this->invoiceRepo->delete($id);
-
         if (!$deleted) {
             return ApiResponse::error(
                 ApiMessages::INVOICE_NOT_FOUND,
                 StatusCodes::NOT_FOUND
             );
         }
-
-        return ApiResponse::success(
-            [],
+        return ApiResponse::success([],
             ApiMessages::INVOICE_DELETED,
             StatusCodes::OK
         );

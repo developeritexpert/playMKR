@@ -11,41 +11,27 @@ class InvoiceController extends Controller
 {
     protected $invoiceService;
 
-    public function __construct(
-        InvoiceService $invoiceService
-    ) {
+    public function __construct(InvoiceService $invoiceService) {
         $this->invoiceService = $invoiceService;
     }
 
-    public function index()
-    {
+    public function index(){
         return $this->invoiceService->index();
     }
 
-    public function store(StoreInvoiceRequest $request)
-    {
-        return $this->invoiceService->store(
-            $request->validated()
-        );
+    public function store(StoreInvoiceRequest $request){
+        return $this->invoiceService->store($request->validated());
     }
 
-    public function show($id)
-    {
+    public function show($id){
         return $this->invoiceService->show($id);
     }
 
-    public function update(
-        UpdateInvoiceRequest $request,
-        $id
-    ) {
-        return $this->invoiceService->update(
-            $id,
-            $request->validated()
-        );
+    public function update(UpdateInvoiceRequest $request,$id){
+        return $this->invoiceService->update($id,$request->validated());
     }
 
-    public function destroy($id)
-    {
+    public function destroy($id){
         return $this->invoiceService->destroy($id);
     }
 }
