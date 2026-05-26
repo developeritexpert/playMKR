@@ -23,9 +23,12 @@ class Sponsor extends Model
         return $this->hasMany(deal::class);
     }
 
-    public function user()
-    {
+    public function user(){
         return $this->belongsTo(User::class);
+    }
+
+    public function invoices(){
+        return $this->hasMany(Invoice::class,'sponsor_id');
     }
 
 }

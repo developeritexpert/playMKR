@@ -13,10 +13,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(
-            TicketRepositoryInterface::class,
-            TicketRepository::class
-        );
+        $this->app->bind(TicketRepositoryInterface::class,TicketRepository::class);
+        // $this->app->bind(InvoiceRepositoryInterface::class,InvoiceRepository::class);
     }
 
     /**

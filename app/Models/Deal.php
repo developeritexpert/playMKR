@@ -19,8 +19,11 @@ class Deal extends Model
         return $this->belongsTo(Sponsor::class);
     }
 
-    public function dealType()
-    {
+    public function dealType(){
         return $this->belongsTo(DealType::class);
     } 
+
+    public function invoices(){
+        return $this->hasMany(Invoice::class,'deal_id');
+    }
 }

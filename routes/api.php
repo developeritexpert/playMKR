@@ -8,6 +8,7 @@ use App\Http\Controllers\Sponser\SponserController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\DeliverType\DeliverTypeController;
 use App\Http\Controllers\InternalTeam\InternalTeamController;
+use App\Http\Controllers\Invoice\InvoiceController;
 use App\Http\Controllers\Profile\SettingsController;
 use App\Http\Controllers\Ticket\TicketController;
 use Illuminate\Support\Facades\Route;
@@ -89,7 +90,14 @@ use Illuminate\Support\Facades\Route;
             // Tickets Routes
             Route::get('tickets/all',[TicketController::class, 'index']);
             Route::post('tickets/add',[TicketController::class, 'store']);
-            Route::get('tickets/{id}',[TicketController::class, 'show']);
-            Route::put('tickets/update/{id}',[TicketController::class, 'update']);
-            Route::delete('tickets/{id}',[TicketController::class, 'destroy']);
+            Route::get('ticket/{id}',[TicketController::class, 'show']);
+            Route::put('ticket/update/{id}',[TicketController::class, 'update']);
+            Route::delete('ticket/{id}',[TicketController::class, 'destroy']);
+
+            // Invoice Routes
+            Route::get('invoice/all',[InvoiceController::class, 'index']);
+            Route::post('invoice/add',[InvoiceController::class, 'store']);
+            Route::get('invoice/{id}',[InvoiceController::class, 'show']);
+            Route::put('invoice/update/{id}',[InvoiceController::class, 'update']);
+            Route::delete('invoice/delete/{id}',[InvoiceController::class, 'destroy']);
     });

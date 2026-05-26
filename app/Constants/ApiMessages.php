@@ -92,4 +92,12 @@ class ApiMessages
     const TICKET_DELETED = 'Ticket deleted successfully';
     const TICKET_NOT_FOUND = 'Ticket not found';
     const TICKET_ASSIGNED = 'Ticket assigned successfully';
+
+    // Invoice Messages
+    const INVOICE_CREATED = 'Invoice created successfully.';
+    const INVOICE_UPDATED = 'Invoice updated successfully.';
+    const INVOICE_DELETED = 'Invoice deleted successfully.';
+    const INVOICE_FETCHED = 'Invoice fetched successfully.';
+    const INVOICE_LIST = 'Invoice list fetched successfully.';
+    const INVOICE_NOT_FOUND = 'Invoice not found.';
 }
