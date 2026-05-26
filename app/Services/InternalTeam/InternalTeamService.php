@@ -16,26 +16,30 @@ class InternalTeamService
 {
     protected InternalTeamRepositoryInterface $internalTeamRepo;
 
-    public function __construct(InternalTeamRepositoryInterface $internalTeamRepo) {
+    public function __construct(InternalTeamRepositoryInterface $internalTeamRepo)
+    {
         $this->internalTeamRepo = $internalTeamRepo;
     }
 
-    public function getAll($perPage = 10){
+    public function getAll($perPage = 10)
+    {
         try {
             $users = $this->internalTeamRepo->paginate($perPage);
-            return ApiResponse::success($users,
+            return ApiResponse::success(
+                $users,
                 ApiMessages::INTERNAL_TEAM_FETCHED
             );
-
         } catch (Exception $e) {
             return ApiResponse::error(
                 ApiMessages::ERROR,
-                StatusCodes::SERVER_ERROR, $e->getMessage()
+                StatusCodes::SERVER_ERROR,
+                $e->getMessage()
             );
         }
     }
 
-    public function getById(int $id){
+    public function getById(int $id)
+    {
         try {
             $user = $this->internalTeamRepo->find($id);
             if (!$user) {
@@ -49,12 +53,14 @@ class InternalTeamService
 
             return ApiResponse::error(
                 ApiMessages::ERROR,
-                StatusCodes::SERVER_ERROR, $e->getMessage()
+                StatusCodes::SERVER_ERROR,
+                $e->getMessage()
             );
         }
     }
 
-    public function create(array $data){
+    public function create(array $data)
+    {
         try {
             $existingUser = User::where('email', $data['email'])->first();
             if ($existingUser) {
@@ -74,21 +80,23 @@ class InternalTeamService
                 'password' => $password,
                 'role_id' => 2,
             ]);
-            Mail::to($user->email)->send(new InternalTeamCredentialsMail($user,$password));
-            return ApiResponse::success($user,
+            Mail::to($user->email)->send(new InternalTeamCredentialsMail($user, $password));
+            return ApiResponse::success(
+                $user,
                 ApiMessages::INTERNAL_TEAM_CREATED,
                 StatusCodes::CREATED
             );
-
         } catch (Exception $e) {
             return ApiResponse::error(
                 ApiMessages::ERROR,
-                StatusCodes::SERVER_ERROR, $e->getMessage()
+                StatusCodes::SERVER_ERROR,
+                $e->getMessage()
             );
         }
     }
 
-    public function update(int $id, array $data){
+    public function update(int $id, array $data)
+    {
         try {
             $user = $this->internalTeamRepo->find($id);
             if (!$user) {
@@ -104,7 +112,6 @@ class InternalTeamService
                 $updatedUser,
                 ApiMessages::INTERNAL_TEAM_UPDATED
             );
-
         } catch (Exception $e) {
             return ApiResponse::error(
                 ApiMessages::ERROR,
@@ -114,7 +121,8 @@ class InternalTeamService
         }
     }
 
-    public function delete(int $id){
+    public function delete(int $id)
+    {
         try {
             $user = $this->internalTeamRepo->find($id);
             if (!$user) {
@@ -125,14 +133,15 @@ class InternalTeamService
             }
 
             $this->internalTeamRepo->delete($user);
-            return ApiResponse::success(null,
+            return ApiResponse::success(
+                null,
                 ApiMessages::INTERNAL_TEAM_DELETED
             );
-
         } catch (Exception $e) {
             return ApiResponse::error(
                 ApiMessages::ERROR,
-                StatusCodes::SERVER_ERROR, $e->getMessage()
+                StatusCodes::SERVER_ERROR,
+                $e->getMessage()
             );
         }
     }

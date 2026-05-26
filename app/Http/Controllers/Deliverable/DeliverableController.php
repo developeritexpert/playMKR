@@ -12,7 +12,8 @@ class DeliverableController extends Controller
 {
     protected DeliverableService $deliverableService;
 
-    public function __construct(DeliverableService $deliverableService){
+    public function __construct(DeliverableService $deliverableService)
+    {
         $this->deliverableService = $deliverableService;
     }
 
@@ -32,7 +33,8 @@ class DeliverableController extends Controller
         return $this->deliverableService->getById($id);
     }
 
-    public function update(UpdateDeliverableRequest $request,int $id) {
+    public function update(UpdateDeliverableRequest $request, int $id)
+    {
         return $this->deliverableService
             ->update($id, $request->validated());
     }

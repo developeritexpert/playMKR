@@ -12,11 +12,13 @@ class InternalTeamController extends Controller
 {
     protected InternalTeamService $internalTeamService;
 
-    public function __construct(InternalTeamService $internalTeamService){
+    public function __construct(InternalTeamService $internalTeamService)
+    {
         $this->internalTeamService = $internalTeamService;
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $perPage = $request->query('per_page', 10);
         return $this->internalTeamService->getAll($perPage);
     }
@@ -26,15 +28,18 @@ class InternalTeamController extends Controller
         return $this->internalTeamService->create($request->validated());
     }
 
-    public function show(int $id){
+    public function show(int $id)
+    {
         return $this->internalTeamService->getById($id);
     }
 
-    public function update(UpdateInternalTeamRequest $request,int $id){
+    public function update(UpdateInternalTeamRequest $request, int $id)
+    {
         return $this->internalTeamService->update($id, $request->validated());
     }
 
-    public function destroy(int $id){
-              return $this->internalTeamService->delete($id);
+    public function destroy(int $id)
+    {
+        return $this->internalTeamService->delete($id);
     }
 }

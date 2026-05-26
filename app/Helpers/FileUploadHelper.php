@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Helpers;
 
 use Illuminate\Http\UploadedFile;
@@ -11,15 +12,14 @@ class FileUploadHelper
     {
         $extension = strtolower($file->getClientOriginalExtension());
         if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
-            $path = $folder.'/images';
-
+            $path = $folder . '/images';
         } elseif (in_array($extension, ['mp4', 'mov', 'avi', 'webm'])) {
-            $path = $folder.'/videos';
+            $path = $folder . '/videos';
         } else {
-            $path = $folder.'/documents';
+            $path = $folder . '/documents';
         }
 
-        $fileName = time().'_'.Str::random(10).'.'.$extension;
+        $fileName = time() . '_' . Str::random(10) . '.' . $extension;
         return $file->storeAs($path, $fileName, 'public');
     }
 
@@ -30,5 +30,3 @@ class FileUploadHelper
         }
     }
 }
-
-

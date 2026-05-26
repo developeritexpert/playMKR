@@ -83,4 +83,13 @@ class ApiMessages
     const INTERNAL_TEAM_UPDATED = 'Internal team member updated successfully';
     const INTERNAL_TEAM_DELETED = 'Internal team member deleted successfully';
     const INTERNAL_TEAM_EMAIL_EXISTS = 'Email already exists';
+
+    // Message for Tickets
+    const TICKETS_FETCHED = 'Tickets fetched successfully';
+    const TICKET_FETCHED = 'Ticket fetched successfully';
+    const TICKET_CREATED = 'Ticket created successfully';
+    const TICKET_UPDATED = 'Ticket updated successfully';
+    const TICKET_DELETED = 'Ticket deleted successfully';
+    const TICKET_NOT_FOUND = 'Ticket not found';
+    const TICKET_ASSIGNED = 'Ticket assigned successfully';
 }

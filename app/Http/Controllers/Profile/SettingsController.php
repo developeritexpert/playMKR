@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
@@ -15,17 +16,17 @@ class SettingsController extends Controller
     {
         $this->settingsService = $settingsService;
     }
-    
+
     public function show()
     {
         return $this->settingsService->getProfile(Auth::user());
     }
-    
+
     public function update(UpdateProfileRequest $request)
     {
         return $this->settingsService->updateProfile(Auth::user(), $request->validated());
     }
-    
+
     public function updatePassword(UpdatePasswordRequest $request)
     {
         return $this->settingsService->updatePassword(Auth::user(), $request->validated());
