@@ -100,4 +100,5 @@ class ApiMessages
     const INVOICE_FETCHED = 'Invoice fetched successfully.';
     const INVOICE_LIST = 'Invoice list fetched successfully.';
     const INVOICE_NOT_FOUND = 'Invoice not found.';
+
 }

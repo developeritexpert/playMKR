@@ -27,7 +27,7 @@ class ResetPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email',
+            // 'email' => 'required|email',
             'token' => 'required|string',
             'password' => 'required|min:8|confirmed',
         ];
@@ -36,8 +36,8 @@ class ResetPasswordRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.required' => 'Email is required',
-            'email.email' => 'Email is invalid',
+            // 'email.required' => 'Email is required',
+            // 'email.email' => 'Email is invalid',
             'token.required' => 'Token is required',
             'password.required' => 'Password is required',
             'password.min' => 'Password must be at least 8 characters long',
@@ -47,11 +47,15 @@ class ResetPasswordRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
+        $errors = [];
+        foreach ($validator->errors()->all() as $error) {
+            $errors[] = $error;
+        }
         throw new HttpResponseException(
             ApiResponse::error(
                 ApiMessages::VALIDATION_FAILED,
                 StatusCodes::UNPROCESSABLE_ENTITY,
-                $validator->errors()
+                $errors
             )
         );
     }

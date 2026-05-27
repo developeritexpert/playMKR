@@ -35,9 +35,9 @@ class DeliverableController extends Controller
 
     public function update(UpdateDeliverableRequest $request, int $id)
     {
-        return $this->deliverableService
-            ->update($id, $request->validated());
+        return $this->deliverableService->update($id, $request->validated());
     }
+
 
     public function destroy(int $id)
     {

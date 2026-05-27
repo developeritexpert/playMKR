@@ -33,7 +33,7 @@ class ResetPasswordMail extends Mailable
             ->with([
                 'token' => $this->token,
                 'email' => $this->email,
-                'url' => config('app.frontend_url') . "/reset-password?token={$this->token}&email={$this->email}"
+                'url' => config('app.frontend_url') . "/reset-password?token={$this->token}"
             ]);
     }
 }

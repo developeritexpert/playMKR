@@ -14,8 +14,8 @@
     Reset Password
 </a>
 
-<p>Or use this token manually:</p>
-<strong>{{ $token }}</strong>
+{{-- <p>Or use this token manually:</p>
+<strong>{{ $token }}</strong> --}}
 
 <p>This link will expire in 15 minutes.</p>
 
