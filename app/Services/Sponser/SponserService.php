@@ -108,7 +108,8 @@ class SponserService
         try {
             $addSponsorApplication = $this->sponserRepo->addSponserApplicationRequest($data);
             $adminEmail = config('mail.admin_email', 'manjeetsingh90692@gmail.com');
-            Mail::to($adminEmail)->send(new NewSponsorRequestMail($addSponsorApplication));
+            // Mail::to($adminEmail)->send(new NewSponsorRequestMail($addSponsorApplication));
+            Mail::to($adminEmail)->queue(new NewSponsorRequestMail($addSponsorApplication));
             return ApiResponse::success(
                 $addSponsorApplication,
                 ApiMessages::SPONSER_REQUEST_SUCCESS,
@@ -193,7 +194,8 @@ class SponserService
                 ]
             );
 
-            Mail::to($user->email)->send(new SponsorApprovedMail($sponsorApplication, $password));
+            // Mail::to($user->email)->send(new SponsorApprovedMail($sponsorApplication, $password));
+            Mail::to($user->email)->queue(new SponsorApprovedMail($sponsorApplication, $password));
 
             return ApiResponse::success(
                 $updatedApplication,
@@ -226,7 +228,8 @@ class SponserService
                 $sponsorApplication,
                 ['status' => 'rejected']
             );
-            Mail::to($updatedSponsor->email)->send(new SponsorRejectedMail($updatedSponsor));
+            // Mail::to($updatedSponsor->email)->send(new SponsorRejectedMail($updatedSponsor));
+            Mail::to($updatedSponsor->email)->queue(new SponsorRejectedMail($updatedSponsor));
             return ApiResponse::success(
                 $updatedSponsor,
                 ApiMessages::SPONSER_REJECTED,

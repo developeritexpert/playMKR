@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class PasswordResetService
 {
@@ -34,7 +35,11 @@ class PasswordResetService
         ]);
 
         $resetUrl = "https://yourfrontend.com/reset-password?token={$token}&email={$email}";
-        Mail::to($email)->send(new ResetPasswordMail($resetUrl));
+
+        Log::info('Sending Reset Password Mail from service');
+        
+        // Mail::to($email)->send(new ResetPasswordMail($resetUrl));
+        Mail::to($email)->queue(new ResetPasswordMail($resetUrl));
     }
 
 

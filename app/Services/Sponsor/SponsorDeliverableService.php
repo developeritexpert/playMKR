@@ -44,4 +44,39 @@ class SponsorDeliverableService
             );
         }
     }
+
+    public function getDeliverableDetails(object $user, int $deliverableId)
+    {
+        try {
+            if (!$user->sponsor) {
+                return ApiResponse::error(
+                    "Sponsor profile not found for this user.",
+                    StatusCodes::NOT_FOUND
+                );
+            }
+
+            $sponsorId = $user->sponsor->id;
+            
+            $deliverable = $this->sponsorDeliverableRepo->getDeliverableById($sponsorId, $deliverableId);
+
+            if (!$deliverable) {
+                return ApiResponse::error(
+                    ApiMessages::DELIVERABLE_NOT_FOUND,
+                    StatusCodes::NOT_FOUND
+                );
+            }
+
+            return ApiResponse::success(
+                $deliverable,
+                ApiMessages::DELIVERABLE_FETCHED,
+                StatusCodes::OK
+            );
+        } catch (Exception $e) {
+            return ApiResponse::error(
+                ApiMessages::ERROR,
+                StatusCodes::SERVER_ERROR,
+                $e->getMessage()
+            );
+        }
+    }
 }

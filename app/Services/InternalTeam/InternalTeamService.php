@@ -80,7 +80,8 @@ class InternalTeamService
                 'password' => $password,
                 'role_id' => 2,
             ]);
-            Mail::to($user->email)->send(new InternalTeamCredentialsMail($user, $password));
+            // Mail::to($user->email)->send(new InternalTeamCredentialsMail($user, $password));
+            Mail::to($user->email)->queue(new InternalTeamCredentialsMail($user, $password));
             return ApiResponse::success(
                 $user,
                 ApiMessages::INTERNAL_TEAM_CREATED,

@@ -85,4 +85,14 @@ class SponsorDeliverableRepository implements SponsorDeliverableRepositoryInterf
             'deliverables' => $paginatedData
         ];
     }
+
+    public function getDeliverableById(int $sponsorId, int $deliverableId)
+    {
+        return Deliverable::with(['deal', 'deliverType'])
+            ->where('id', $deliverableId)
+            ->whereHas('deal', function ($q) use ($sponsorId) {
+                $q->where('sponsor_id', $sponsorId);
+            })
+            ->first();
+    }
 }

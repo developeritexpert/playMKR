@@ -97,5 +97,7 @@ Route::middleware(['auth:api'])->group(function () {
         // Sponsor  
         Route::middleware(['auth:api', 'role:sponser'])->prefix('sponsor')->group(function () {
                 Route::get('deliverables', [SponsorDeliverableController::class, 'index']);
+
+                Route::get('deliverables/{id}', [SponsorDeliverableController::class, 'show']);
         });
 });

@@ -20,11 +20,13 @@ class SponsorDeliverableController extends Controller
     {
         $user = Auth::user();
 
-        // dd($user);
-        // $sponsor = $user->sponsor;
-        
-        // dd($sponsor);
-
         return $this->deliverableService->getDashboardDeliverables($user, $request->validated());
+    }
+
+    public function show($id)
+    {
+        $user = Auth::user();
+        
+        return $this->deliverableService->getDeliverableDetails($user, $id);
     }
 }
