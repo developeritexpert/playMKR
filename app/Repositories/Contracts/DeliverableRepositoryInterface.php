@@ -9,4 +9,7 @@ interface DeliverableRepositoryInterface
     public function find(int $id);
     public function update($deliverable, array $data);
     public function delete($deliverable);
+
+    public function createDeliverType(string $name);
+    public function createAttachment(array $data);
 }

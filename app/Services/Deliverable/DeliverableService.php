@@ -1,46 +1,38 @@
 <?php
 
-namespace App\Services\Deliverable;
 
-use App\Constants\ApiMessages;
-use App\Constants\StatusCodes;
+namespace App\Services\Deliverable;
+use Exception;
+use Illuminate\Support\Facades\DB;
 use App\Helpers\ApiResponse;
 use App\Helpers\FileUploadHelper;
-use App\Models\DeliverType;
+use App\Constants\ApiMessages;
+use App\Constants\StatusCodes;
 use App\Repositories\Contracts\DeliverableRepositoryInterface;
-use Exception;
-use Illuminate\Support\Str;
 
 class DeliverableService
 {
     protected DeliverableRepositoryInterface $deliverableRepo;
 
-    public function __construct(
-        DeliverableRepositoryInterface $deliverableRepo
-    ) {
-        $this->deliverableRepo = $deliverableRepo;
+    public function __construct(DeliverableRepositoryInterface $deliverableRepo){
+        $this->deliverableRepo =  $deliverableRepo;
     }
 
-    public function getAll($perPage = 10)
-    {
+    public function getAll($perPage = 10){
         try {
-            $deliverables = $this->deliverableRepo->paginate($perPage);
-            return ApiResponse::success(
-                $deliverables,
+            $deliverables =$this->deliverableRepo->paginate($perPage);
+            return ApiResponse::success($deliverables,
                 ApiMessages::DELIVERABLES_FETCHED
             );
         } catch (Exception $e) {
-
             return ApiResponse::error(
                 ApiMessages::ERROR,
-                StatusCodes::SERVER_ERROR,
-                $e->getMessage()
+                StatusCodes::SERVER_ERROR,$e->getMessage()
             );
         }
     }
 
-    public function getById(int $id)
-    {
+    public function getById(int $id){
         try {
             $deliverable = $this->deliverableRepo->find($id);
             if (!$deliverable) {
@@ -49,10 +41,10 @@ class DeliverableService
                     StatusCodes::NOT_FOUND
                 );
             }
-            return ApiResponse::success(
-                $deliverable,
+            return ApiResponse::success($deliverable,
                 ApiMessages::DELIVERABLE_FETCHED
             );
+
         } catch (Exception $e) {
             return ApiResponse::error(
                 ApiMessages::ERROR,
@@ -62,69 +54,218 @@ class DeliverableService
         }
     }
 
-    public function create(array $data)
-    {
-        try {
-            if (isset($data['deliver_type'])) {
-                $deliverType = DeliverType::firstOrCreate(
-                    ['name' => $data['deliver_type']]
+    // public function create(array $data)
+    // {
+    //     DB::beginTransaction();
+
+    //     try {
+
+    //         if (isset($data['deliver_type'])) {
+
+    //             $deliverType =
+    //                 $this->deliverableRepo
+    //                 ->createDeliverType(
+    //                     $data['deliver_type']
+    //                 );
+
+    //             $data['deliver_type_id'] =
+    //                 $deliverType->id;
+
+    //             unset($data['deliver_type']);
+    //         }
+
+    //         if (isset($data['status'])) {
+
+    //             $data['status_updated_at'] =
+    //                 now();
+    //         }
+
+    //         $attachments =
+    //             $data['attachments'] ?? [];
+
+    //         unset($data['attachments']);
+
+    //         $deliverable =
+    //             $this->deliverableRepo
+    //             ->create($data);
+
+    //         if (!empty($attachments)) {
+
+    //             foreach ($attachments as $file) {
+
+    //                 $path =
+    //                     FileUploadHelper::upload(
+    //                         $file,
+    //                         'deliverables'
+    //                     );
+
+    //                 $this->deliverableRepo
+    //                     ->createAttachment([
+    //                         'deliverable_id' =>
+    //                             $deliverable->id,
+
+    //                         'file_path' =>
+    //                             $path,
+    //                     ]);
+    //             }
+    //         }
+
+    //         DB::commit();
+
+    //         return ApiResponse::success(
+    //             $this->deliverableRepo
+    //                 ->find($deliverable->id),
+
+    //             ApiMessages::DELIVERABLE_CREATED,
+    //             StatusCodes::CREATED
+    //         );
+
+    //     } catch (Exception $e) {
+
+    //         DB::rollBack();
+
+    //         return ApiResponse::error(
+    //             ApiMessages::ERROR,
+    //             StatusCodes::SERVER_ERROR,
+    //             $e->getMessage()
+    //         );
+    //     }
+    // }
+
+    public function create(array $data){
+    DB::beginTransaction();
+    try {
+        if (!empty($data['deliver_type'])) {
+            $deliverType =
+                $this->deliverableRepo
+                ->createDeliverType(
+                    $data['deliver_type']
                 );
-                $data['deliver_type_id'] = $deliverType->id;
-                unset($data['deliver_type']);
-            }
-            if (isset($data['attachment'])) {
-                $data['attachment'] = FileUploadHelper::upload($data['attachment'], 'deliverables');
-            }
-            $deliverable = $this->deliverableRepo->create($data);
-            return ApiResponse::success(
-                $deliverable,
-                ApiMessages::DELIVERABLE_CREATED,
-                StatusCodes::CREATED
-            );
-        } catch (Exception $e) {
-            return ApiResponse::error(
-                ApiMessages::ERROR,
-                StatusCodes::SERVER_ERROR,
-                $e->getMessage()
-            );
-        }
-    }
+            $data['deliver_type_id'] =
+                $deliverType->id;
 
-    public function update(int $id, array $data)
-    {
+            unset($data['deliver_type']);
+        }
+
+        if (!empty($data['status'])) {
+
+            $data['status_updated_at'] =
+                now();
+        }
+
+        $attachments =
+            request()->file('attachments', []);
+
+        unset($data['attachments']);
+
+        $deliverable =
+            $this->deliverableRepo
+            ->create($data);
+
+        if (!empty($attachments)) {
+            foreach ($attachments as $file) {
+                if ($file->isValid()) {
+                    $path = FileUploadHelper::upload($file,'deliverables');
+
+                    $this->deliverableRepo
+                        ->createAttachment([
+                            'deliverable_id' =>$deliverable->id,
+                            'file_path' => $path,
+                        ]);
+                }
+            }
+        }
+
+        DB::commit();
+
+        return ApiResponse::success(
+            $this->deliverableRepo->find($deliverable->id),
+            ApiMessages::DELIVERABLE_CREATED,
+            StatusCodes::CREATED
+        );
+
+    } catch (Exception $e) {
+        DB::rollBack();
+        return ApiResponse::error(
+            ApiMessages::ERROR,
+            StatusCodes::SERVER_ERROR,
+            $e->getMessage()
+        );
+    }
+}
+
+
+    public function update(int $id, array $data){
+        DB::beginTransaction();
         try {
-            $deliverable = $this->deliverableRepo->find($id);
-            if (!$deliverable) {
+    
+            $deliverable =$this->deliverableRepo->find($id);
+            if (!$deliverable) {    
                 return ApiResponse::error(
                     ApiMessages::DELIVERABLE_NOT_FOUND,
                     StatusCodes::NOT_FOUND
                 );
             }
-            if (isset($data['deliver_type'])) {
-                $slug = Str::slug($data['deliver_type']);
-                $deliverType = DeliverType::firstOrCreate(
-                    ['slug' => $slug],
-                    ['name' => $data['deliver_type']]
-                );
+    
+            if (
+                isset($data['deliver_type']) &&
+                !isset($data['deliver_type_id'])
+            ) {
+
+                $deliverType =$this->deliverableRepo->createDeliverType($data['deliver_type']);
                 $data['deliver_type_id'] = $deliverType->id;
-                unset($data['deliver_type']);
             }
-            if (isset($data['attachment'])) {
-                FileUploadHelper::delete(
-                    $deliverable->attachment
-                );
-                $data['attachment'] = FileUploadHelper::upload(
-                    $data['attachment'],
-                    'deliverables'
-                );
+    
+            unset($data['deliver_type']);
+            if (isset($data['status'])) {
+                $data['status_updated_at'] = now();
             }
-            $updatedDeliverable = $this->deliverableRepo
-                ->update($deliverable, $data);
+    
+            $attachments =
+                $data['attachments'] ?? [];
+    
+            unset($data['attachments']);
+    
+            $updatedDeliverable =
+                $this->deliverableRepo
+                ->update(
+                    $deliverable,
+                    $data
+                );
+    
+            if (!empty($attachments)) {
+    
+                foreach ($attachments as $file) {
+    
+                    $path =
+                        FileUploadHelper::upload(
+                            $file,
+                            'deliverables'
+                        );
+    
+                    $this->deliverableRepo
+                        ->createAttachment([
+                            'deliverable_id' =>
+                                $deliverable->id,
+    
+                            'file_path' => $path,
+                        ]);
+                }
+            }
+    
+            DB::commit();
+    
             return ApiResponse::success(
-                $updatedDeliverable,
+                $this->deliverableRepo
+                    ->find($updatedDeliverable->id),
+    
                 ApiMessages::DELIVERABLE_UPDATED
             );
+    
         } catch (Exception $e) {
+    
+            DB::rollBack();
+    
             return ApiResponse::error(
                 ApiMessages::ERROR,
                 StatusCodes::SERVER_ERROR,
@@ -132,30 +273,32 @@ class DeliverableService
             );
         }
     }
+    
 
-    public function delete(int $id)
-    {
+    public function delete(int $id){
         try {
-            $deliverable = $this->deliverableRepo->find($id);
+            $deliverable =$this->deliverableRepo->find($id);
             if (!$deliverable) {
                 return ApiResponse::error(
                     ApiMessages::DELIVERABLE_NOT_FOUND,
                     StatusCodes::NOT_FOUND
                 );
             }
-            FileUploadHelper::delete(
-                $deliverable->attachment
-            );
+
+            foreach (
+                $deliverable->attachments as $attachment
+            ) {
+                FileUploadHelper::delete($attachment->file_path);
+            }
             $this->deliverableRepo->delete($deliverable);
-            return ApiResponse::success(
-                null,
+            return ApiResponse::success(null,
                 ApiMessages::DELIVERABLE_DELETED
             );
+
         } catch (Exception $e) {
             return ApiResponse::error(
                 ApiMessages::ERROR,
-                StatusCodes::SERVER_ERROR,
-                $e->getMessage()
+                StatusCodes::SERVER_ERROR,$e->getMessage()
             );
         }
     }

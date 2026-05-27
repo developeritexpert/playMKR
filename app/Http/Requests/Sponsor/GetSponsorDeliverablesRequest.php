@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\DeliverType;
+namespace App\Http\Requests\Sponsor;
 
 use App\Constants\ApiMessages;
 use App\Constants\StatusCodes;
@@ -9,7 +9,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StoreDeliverTypeRequest extends FormRequest
+class GetSponsorDeliverablesRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -19,21 +19,21 @@ class StoreDeliverTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:deliver_types,name'
+            'search' => 'nullable|string|max:255',
+            // Using DB enum: Active, Pending, Completed (Frontend maps 'Active' to 'In Progress')
+            'status' => 'nullable|string|in:Active,Pending,Completed', 
+            'time'   => 'nullable|string', // e.g., 'today', 'this_week', 'this_month', 'last_7_days'
+            'per_page' => 'nullable|integer|min:1',
         ];
     }
 
     protected function failedValidation(Validator $validator)
     {
-        $errors = [];
-        foreach ($validator->errors()->all() as $error) {
-            $errors[] = $error;
-        }
         throw new HttpResponseException(
             ApiResponse::error(
                 ApiMessages::VALIDATION_FAILED,
                 StatusCodes::UNPROCESSABLE_ENTITY,
-                $errors
+                $validator->errors()
             )
         );
     }

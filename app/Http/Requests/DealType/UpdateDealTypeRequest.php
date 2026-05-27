@@ -23,8 +23,16 @@ class UpdateDealTypeRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
+        $errors = [];
+        foreach ($validator->errors()->all() as $error) {
+            $errors[] = $error;
+        }
         throw new HttpResponseException(
-            ApiResponse::error(ApiMessages::VALIDATION_FAILED, StatusCodes::UNPROCESSABLE_ENTITY, $validator->errors())
+            ApiResponse::error(
+                ApiMessages::VALIDATION_FAILED,
+                StatusCodes::UNPROCESSABLE_ENTITY,
+                $errors
+            )
         );
     }
 }

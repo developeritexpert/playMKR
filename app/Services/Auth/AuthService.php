@@ -123,7 +123,11 @@ class AuthService
             ]
         );
 
-        Mail::to($data['email'])->send(
+        // Mail::to($data['email'])->send(
+        //     new ResetPasswordMail($token, $data['email'])
+        // );
+
+        Mail::to($data['email'])->queue(
             new ResetPasswordMail($token, $data['email'])
         );
 
@@ -133,34 +137,47 @@ class AuthService
 
     public function resetPassword(array $data)
     {
-        $record = DB::table('password_reset_tokens')
-            ->where('email', $data['email'])
-            ->first();
+        $records = DB::table('password_reset_tokens')->get();
+
+        $record = null;
+
+        foreach ($records as $item) {
+            if (Hash::check($data['token'], $item->token)) {
+                $record = $item;
+                break;
+            }
+        }
 
         if (!$record) {
-            return ApiResponse::error(ApiMessages::INVALID_REQUEST, StatusCodes::BAD_REQUEST);
+            return ApiResponse::error(
+                ApiMessages::INVALID_REQUEST,
+                StatusCodes::BAD_REQUEST
+            );
         }
 
-        // check token
-        if (!Hash::check($data['token'], $record->token)) {
-            return ApiResponse::error(ApiMessages::INVALID_REQUEST, StatusCodes::BAD_REQUEST);
+        if (Carbon::parse($record->created_at)
+            ->addMinutes(15)
+            ->isPast()
+        ) {
+
+            return ApiResponse::error(
+                ApiMessages::INVALID_REQUEST,
+                StatusCodes::BAD_REQUEST
+            );
         }
 
-        // check expiry (e.g. 15 mins)
-        if (Carbon::parse($record->created_at)->addMinutes(15)->isPast()) {
-            return ApiResponse::error(ApiMessages::INVALID_REQUEST, StatusCodes::BAD_REQUEST);
-        }
-
-        // update password (mutator will hash)
-        $this->userRepo->updateByEmail($data['email'], [
+        $this->userRepo->updateByEmail($record->email, [
             'password' => $data['password']
         ]);
 
-        // delete token
         DB::table('password_reset_tokens')
-            ->where('email', $data['email'])
+            ->where('email', $record->email)
             ->delete();
 
-        return ApiResponse::success([], ApiMessages::PASSWORD_RESET_SUCCESS, StatusCodes::OK);
+        return ApiResponse::success(
+            [],
+            ApiMessages::PASSWORD_RESET_SUCCESS,
+            StatusCodes::OK
+        );
     }
 }

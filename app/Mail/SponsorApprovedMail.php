@@ -7,8 +7,10 @@ use App\Models\Sponsor;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 
-class SponsorApprovedMail extends Mailable
+class SponsorApprovedMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -23,6 +25,10 @@ class SponsorApprovedMail extends Mailable
 
     public function build()
     {
+        Log::info('Sending Sponsor Approved Email', [
+            'email' => $this->sponsorApplication->email
+        ]);
+
         return $this->subject('Sponsor Request Approved')
             ->view('emails.sponsor-approved')
             ->with([
