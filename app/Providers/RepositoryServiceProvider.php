@@ -19,6 +19,8 @@ use App\Repositories\InternalTeamRepository;
 use App\Repositories\Invoice\InvoiceRepository;
 use App\Repositories\Invoice\InvoiceRepositoryInterface;
 use App\Repositories\TicketRepository;
+use App\Repositories\Contracts\SponsorDeliverableRepositoryInterface;
+use App\Repositories\Sponsor\SponsorDeliverableRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -33,6 +35,9 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(TicketRepositoryInterface::class,TicketRepository::class);
 
         $this->app->bind(InvoiceRepositoryInterface::class,InvoiceRepository::class);
+
+        // Sponsor
+        $this->app->bind(SponsorDeliverableRepositoryInterface::class, SponsorDeliverableRepository::class);
     }
 } 
 

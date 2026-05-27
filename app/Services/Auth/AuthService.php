@@ -123,7 +123,11 @@ class AuthService
             ]
         );
 
-        Mail::to($data['email'])->send(
+        // Mail::to($data['email'])->send(
+        //     new ResetPasswordMail($token, $data['email'])
+        // );
+
+        Mail::to($data['email'])->queue(
             new ResetPasswordMail($token, $data['email'])
         );
 
