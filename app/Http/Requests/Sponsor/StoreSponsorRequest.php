@@ -19,7 +19,7 @@ class StoreSponsorRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'company_name' => 'required|string|max:255',
-            'sponser_name' => 'required|string|max:255',
+            'sponsor_name' => 'required|string|max:255',
             'industry' => 'required|string|max:255',
             'email' => 'required|email|unique:sponsors,email',
             'phone' => 'required|string|max:20',
@@ -33,7 +33,7 @@ class StoreSponsorRequest extends FormRequest
         return [
             'name.required' => 'Name is required',
             'company_name.required' => 'Company name is required',
-            'sponser_name.required' => 'Sponsor name is required',
+            'sponsor_name.required' => 'Sponsor name is required',
             'industry.required' => 'Industry is required',
             'email.required' => 'Email is required',
             'email.email' => 'Email is invalid',

@@ -6,18 +6,20 @@ use Illuminate\Support\Str;
 
 class InvoiceRepository implements InvoiceRepositoryInterface
 {
-    public function getAll(){
-        return Invoice::latest()->get();
+    // public function getAll(){
+    //     return Invoice::latest()->get();
+    // }
+    public function paginate(array $filters = [], int $perPage = 10)
+    {
+        // Search by Invoice ID, Invoice title, Deal title, or Sponsor name
+        return Invoice::with(['deal', 'sponsor'])
+            ->filterAndSearch($filters, ['invoice_id', 'invoice_title', 'deal.deal_title', 'sponsor.name'])
+            ->paginate($perPage);
     }
 
     public function findById($id){
         return Invoice::find($id);
     }
-
-    // public function create(array $data){
-    //     $data['invoice_id'] = 'INV-' . strtoupper(Str::random(6));
-    //     return Invoice::create($data);
-    // }
 
     public function create(array $data){
     $lastInvoice = Invoice::latest()->first();

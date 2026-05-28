@@ -43,7 +43,7 @@ class ApiMessages
     const DEAL_DELETED = 'Deal deleted successfully';
     const DEAL_NOT_FOUND = 'Deal not found';
 
-    //Auth/Sponser Messages
+    //Auth/Spons0r Messages
     const SPONSER_REQUEST_SUCCESS = 'Your application has been submitted successfully , we will contact you soon!';
     const SPONSER_LIST_SUCCESS = 'Sponsor applications fetched successfully';
 
@@ -52,6 +52,7 @@ class ApiMessages
     const SPONSER_REJECTED = 'Sponser Rejected';
 
     const EMAIL_APPROVED = 'Email already approved';
+    const EMAIL_REJECTED = 'Email already rejected';
 
     const DEAL_TYPES_FETCHED = "Deal types fetched successfully";
     const DEAL_TYPE_FETCHED = "Deal type fetched successfully";

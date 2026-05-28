@@ -7,8 +7,11 @@ use App\Repositories\Contracts\TicketRepositoryInterface;
 
 class TicketRepository implements TicketRepositoryInterface
 {
-    public function paginate(int $perPage = 10){
-        return TicketManagement::with(['deal','sponsor','assignedUser','assignedBy'])->latest()->paginate($perPage);
+    public function paginate(array $filters = [], int $perPage = 10)
+    {
+        return TicketManagement::with(['deal', 'sponsor', 'assignedUser', 'assignedBy'])
+            ->filterAndSearch($filters, ['ticket_id', 'ticket_name', 'deal.deal_title', 'sponsor.name'])
+            ->paginate($perPage);
     }
 
     public function find(int $id){

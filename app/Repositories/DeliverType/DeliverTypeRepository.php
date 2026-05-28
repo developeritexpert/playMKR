@@ -6,9 +6,9 @@ use App\Models\DeliverType;
 
 class DeliverTypeRepository
 {
-    public function getAll()
+    public function paginate(int $perPage = 10)
     {
-        return DeliverType::latest()->get();
+        return DeliverType::latest()->paginate($perPage);
     }
 
     public function findById($id)

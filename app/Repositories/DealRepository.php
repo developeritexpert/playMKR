@@ -6,8 +6,11 @@ use App\Repositories\Contracts\DealRepositoryInterface;
 
 class DealRepository implements DealRepositoryInterface
 {
-    public function paginate($perpage = 10){
-        return Deal::latest()->paginate($perpage);
+    public function paginate(array $filters = [], int $perPage = 10)
+    {
+        return Deal::with(['sponsor', 'dealType'])
+            ->filterAndSearch($filters, ['id', 'deal_title', 'sponsor.name'])
+            ->paginate($perPage);
     }
     public function all()
     {

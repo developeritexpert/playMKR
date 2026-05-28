@@ -17,7 +17,7 @@ class UpdateSponsorRequest extends FormRequest
         return [
             'name' => 'sometimes|required|string|max:255',
             'company_name' => 'sometimes|required|string|max:255',
-            'sponser_name' => 'sometimes|required|string|max:255',
+            'sponsor_name' => 'sometimes|required|string|max:255',
             'email' => 'nullable|email|unique:sponsors,email,' . $this->route('id'),
             'phone' => 'nullable|string|max:20',
             'industry' => 'nullable',

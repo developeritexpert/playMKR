@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\SearchableAndFilterable;
 
 class TicketManagement extends Model
 {
+    use SearchableAndFilterable;
     protected $fillable = [
         'deal_id','sponsor_id','ticket_id','ticket_name','number_of_tickets','assigned_to','assigned_by','ticket_type',
         'status','distribution_date','location','description','ticket_attachment',

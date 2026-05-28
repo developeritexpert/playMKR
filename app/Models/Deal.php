@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\SearchableAndFilterable;
 
 class Deal extends Model
 {
+    use SearchableAndFilterable;
     protected $fillable = [
             'sponsor_id',
             'deal_title',
@@ -15,7 +17,7 @@ class Deal extends Model
             'deal_type_id',
     ];
 
-    public function sponser(){
+    public function sponsor(){
         return $this->belongsTo(Sponsor::class);
     }
 

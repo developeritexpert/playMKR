@@ -6,7 +6,9 @@ use App\Models\TicketManagement;
 
 interface TicketRepositoryInterface
 {
-    public function paginate(int $perPage = 10);
+    // public function paginate(int $perPage = 10);
+    public function paginate(array $filters = [], int $perPage = 10);
+
     public function find(int $id);
     public function create(array $data);
     public function update(TicketManagement $ticket, array $data);

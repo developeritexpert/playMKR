@@ -19,7 +19,7 @@ class RejectSponsorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|integer|exists:sponser_applications,id',
+            'id' => 'required|integer|exists:sponsor_applications,id',
         ];
     }
 

@@ -3,14 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\SearchableAndFilterable;
 
 class Sponsor extends Model
 {
+    use SearchableAndFilterable;
     protected $fillable = [
         'user_id',
         'name',
         'company_name',
-        'sponser_name',
+        'sponsor_name',
         'industry',
         'website',
         'primary_contact',

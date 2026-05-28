@@ -12,7 +12,6 @@ return new class extends Migration
             if (Schema::hasColumn('deliverables', 'attachment')) {
                 $table->dropColumn('attachment');
             }
-            $table->foreignId('sponsor_id')->nullable()->constrained('sponsors')->nullOnDelete();
             $table->foreignId('assigned_to')->nullable()->constrained('users')->nullOnDelete();
             $table->enum('status', ['pending', 'in_progress', 'completed'])->default('pending');
             $table->timestamp('status_updated_at')->nullable();

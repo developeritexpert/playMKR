@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\SearchableAndFilterable;
 
 class Invoice extends Model
 {
+    use SearchableAndFilterable;
     protected $fillable = [
         'deal_id',
         'sponsor_id',

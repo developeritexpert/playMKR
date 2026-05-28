@@ -29,7 +29,7 @@ class UpdateDeliverableRequest extends FormRequest
 
         'deliver_type_id' =>'nullable|exists:deliver_types,id',     
         'task_id' =>'nullable|exists:tasks,id',
-        'sponsor_id' =>'nullable|exists:sponsers,id',
+        'sponsor_id' =>'nullable|exists:sponsors,id',
         'assigned_to' =>'nullable|exists:users,id',
         'status' =>'nullable|in:pending,in_progress,completed',
         'priority' =>'nullable|in:low,medium,high',

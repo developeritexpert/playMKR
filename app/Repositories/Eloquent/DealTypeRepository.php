@@ -6,9 +6,8 @@ use App\Repositories\Contracts\DealTypeRepositoryInterface;
 
 class DealTypeRepository implements DealTypeRepositoryInterface
 {
-    public function all()
-    {
-        return DealType::all();
+    public function paginate(int $perPage = 10){
+        return DealType::latest()->paginate($perPage);
     }
 
     public function find(int $id)

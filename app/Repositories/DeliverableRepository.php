@@ -9,12 +9,11 @@ use Illuminate\Support\Str;
 
 class DeliverableRepository implements DeliverableRepositoryInterface
 {
-    public function paginate(int $perPage){
-        return Deliverable::with([  'deal',
-        'deliverType',
-        'attachments',
-        'assignedUser',
-        'sponsor'])->latest()->paginate($perPage);
+    public function paginate(array $filters = [], int $perPage = 10)
+    {
+        return Deliverable::with(['deal', 'deliverType', 'attachments', 'assignedUser', 'sponsor'])
+            ->filterAndSearch($filters, ['task_id', 'title', 'deal.deal_title', 'sponsor.name'])
+            ->paginate($perPage);
     }
 
     public function create(array $data){
@@ -61,5 +60,10 @@ class DeliverableRepository implements DeliverableRepositoryInterface
         return DeliverableAttachment::create(
             $data
         );
+    }
+
+    public function getLastDeliverable()
+    {
+        return Deliverable::latest('id')->first();
     }
 }

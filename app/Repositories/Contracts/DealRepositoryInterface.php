@@ -10,6 +10,8 @@ interface DealRepositoryInterface
     public function create(array $data);
     public function update(Deal $deal, array $data);
     public function delete(Deal $deal);
-    public function paginate(int $perPage = 10);
+    // public function paginate(int $perPage = 10);
+    public function paginate(array $filters = [], int $perPage = 10);
+
 
 }

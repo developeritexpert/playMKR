@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use App\Models\SponserApplications;
 use App\Models\Sponsor;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -14,25 +13,23 @@ class SponsorApprovedMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public $sponsorApplication;
+    // app/Mail/SponsorApprovedMail.php
+
+    public $sponsor;
     public $password;
 
-    public function __construct(SponserApplications $sponsorApplication, $password)
+    public function __construct($sponsor, $password)
     {
-        $this->sponsorApplication = $sponsorApplication;
+        $this->sponsor = $sponsor;
         $this->password = $password;
     }
 
     public function build()
     {
-        Log::info('Sending Sponsor Approved Email', [
-            'email' => $this->sponsorApplication->email
-        ]);
-
-        return $this->subject('Sponsor Request Approved')
+        return $this->subject('Your PlayMKR Sponsor Account Credentials')
             ->view('emails.sponsor-approved')
             ->with([
-                'sponsor' => $this->sponsorApplication,
+                'sponsor' => $this->sponsor,
                 'password' => $this->password
             ]);
     }

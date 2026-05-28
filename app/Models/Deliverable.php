@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\SearchableAndFilterable;
 
 class Deliverable extends Model
 {
+    use SearchableAndFilterable;
+    
     protected $fillable = [
         'deal_id',
         'deliver_type_id',

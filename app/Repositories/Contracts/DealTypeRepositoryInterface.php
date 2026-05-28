@@ -5,7 +5,7 @@ use App\Models\DealType;
 
 interface DealTypeRepositoryInterface
 {
-    public function all();
+    public function paginate(int $perPage = 10);
     public function find(int $id);
     public function create(array $data);
     public function update(DealType $dealType, array $data);
