@@ -6,10 +6,10 @@ use App\Models\User;
 use App\Repositories\Contracts\InternalTeamRepositoryInterface;
 
 class InternalTeamRepository implements InternalTeamRepositoryInterface
-{
-    public function paginate(int $perPage = 10)
-    {
-        return User::where('role_id', 2)->latest()->paginate($perPage);
+{ 
+    public function paginate(array $filters = [], int $perPage = 10){
+        return User::where('role_id', 2)
+        ->filterAndSearch($filters,['name', 'email'])->paginate($perPage);
     }
 
     public function find(int $id)

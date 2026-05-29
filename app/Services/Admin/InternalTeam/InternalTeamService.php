@@ -21,22 +21,21 @@ class InternalTeamService
         $this->internalTeamRepo = $internalTeamRepo;
     }
 
-    public function getAll($perPage = 10)
-    {
-        try {
-            $users = $this->internalTeamRepo->paginate($perPage);
-            return ApiResponse::success(
-                $users,
-                ApiMessages::INTERNAL_TEAM_FETCHED
-            );
-        } catch (Exception $e) {
-            return ApiResponse::error(
-                ApiMessages::ERROR,
-                StatusCodes::SERVER_ERROR,
-                $e->getMessage()
-            );
-        }
+    public function getAll(array $filters = [], $perPage = 10){
+    try {
+        $users = $this->internalTeamRepo->paginate($filters, $perPage);
+        return ApiResponse::success($users,
+            ApiMessages::INTERNAL_TEAM_FETCHED
+        );
+
+    } catch (Exception $e) {
+        return ApiResponse::error(
+            ApiMessages::ERROR,
+            StatusCodes::SERVER_ERROR,
+            $e->getMessage()
+        );
     }
+}
 
     public function getById(int $id)
     {

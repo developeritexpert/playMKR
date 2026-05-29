@@ -18,10 +18,12 @@ class InternalTeamController extends Controller
     }
 
     public function index(Request $request)
-    {
-        $perPage = $request->query('per_page', 10);
-        return $this->internalTeamService->getAll($perPage);
-    }
+{
+    $filters = $request->only(['search']);
+    $perPage = $request->query('per_page', 10);
+
+    return $this->internalTeamService->getAll($filters, $perPage);
+}
 
     public function store(StoreInternalTeamRequest $request)
     {
