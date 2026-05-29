@@ -16,7 +16,7 @@ class Deliverable extends Model
         'description',
         'quantity',
         'attachment',
-        'task_id',
+        // 'task_id',
         'sponsor_id',
         'assigned_to',
         'status',

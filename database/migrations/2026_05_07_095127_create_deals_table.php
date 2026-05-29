@@ -11,7 +11,6 @@ return new class extends Migration {
             $table->foreignId('sponsor_id')->constrained('sponsors')->onDelete('cascade');
             $table->string('deal_title');
             $table->text('deal_description')->nullable();
-            // $table->string('deal_type');
             $table->enum('status', ['Active', 'Pending', 'Completed'])->default('Pending');
             $table->timestamps();
         });

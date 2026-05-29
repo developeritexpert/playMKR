@@ -31,10 +31,10 @@ class User extends Authenticatable
         ];
     }
 
-    public function setPasswordAttribute(string $value)
-    {
-        $this->attributes['password'] = bcrypt($value);
-    }
+    // public function setPasswordAttribute(string $value)
+    // {
+    //     $this->attributes['password'] = bcrypt($value);
+    // }
 
     public function role()
     {

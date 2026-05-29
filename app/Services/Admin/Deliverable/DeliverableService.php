@@ -116,19 +116,15 @@ class DeliverableService
 public function create(array $data){
     DB::beginTransaction();
     try {
-        // --- Auto-Generate Task ID (T001, T002, etc.) ---
         $lastDeliverable = $this->deliverableRepo->getLastDeliverable();
         if ($lastDeliverable && $lastDeliverable->task_id) {
-            // Extract the number and increment (e.g., "T005" -> 5 + 1 -> 6)
             $lastNumber = (int) str_replace('T', '', $lastDeliverable->task_id);
             $newNumber = $lastNumber + 1;
         } else {
-            $newNumber = 1; // Start at 1 if no records exist or older records have NULL task_id
+            $newNumber = 1; 
         }
         
-        // Format to 3 digits (e.g., T001)
         $data['task_id'] = 'T' . str_pad($newNumber, 3, '0', STR_PAD_LEFT);
-        // -----------------------------------------------
 
         if (!empty($data['deliver_type'])) {
             $deliverType = $this->deliverableRepo->createDeliverType($data['deliver_type']);

@@ -53,6 +53,7 @@ class ApiMessages
 
     const EMAIL_APPROVED = 'Email already approved';
     const EMAIL_REJECTED = 'Email already rejected';
+    const CANNOT_BE_REJECTED = 'This sponsor request is already approved and cannot be rejected';
 
     const DEAL_TYPES_FETCHED = "Deal types fetched successfully";
     const DEAL_TYPE_FETCHED = "Deal type fetched successfully";

@@ -28,17 +28,17 @@ class UpdateInvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'deal_id' => 'required|exists:deals,id',
-            'sponsor_id' => 'required|exists:sponsors,id',
-            'invoice_title' => 'required|string|max:255',
-            'invoice_amount' => 'required|numeric',
+            'deal_id' => 'exists:deals,id',
+            'sponsor_id' => 'exists:sponsors,id',
+            'invoice_title' => 'string|max:255',
+            'invoice_amount' => 'numeric',
             'tax' => 'nullable|numeric',
             'discount' => 'nullable|numeric',
-            'total_amount' => 'required|numeric',
-            'currency' => 'required|string',
-            'invoice_date' => 'required|date',
-            'due_date' => 'required|date',
-            'payment_status' => 'required|in:Pending,Paid,Overdue',
+            'total_amount' => 'numeric',
+            'currency' => 'string',
+            'invoice_date' => 'date',
+            'due_date' => 'date',
+            'payment_status' => 'in:Pending,Paid,Overdue',
             'billing_address' => 'nullable|string',
             'contact_email' => 'nullable|email',
         ];

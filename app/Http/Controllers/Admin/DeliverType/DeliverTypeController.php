@@ -44,6 +44,24 @@ class DeliverTypeController extends Controller
         );
     }
 
+    public function show(int $id)
+    {
+        $deliverType = $this->deliverTypeService->findById($id);
+
+        if (!$deliverType) {
+            return ApiResponse::error(
+                ApiMessages::DELIVER_TYPE_NOT_FOUND,
+                StatusCodes::NOT_FOUND
+            );
+        }
+
+        return ApiResponse::success(
+            $deliverType,
+            ApiMessages::DELIVER_TYPE_LIST,
+            StatusCodes::OK
+        );
+    }
+
     public function update(UpdateDeliverTypeRequest $request, int $id)
     {
         $data = $this->deliverTypeService->update($id, $request->validated());

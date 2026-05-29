@@ -24,6 +24,8 @@ class StoreDeliverableRequest extends FormRequest
      */
     public function rules(): array
     {
+        // dd($this->all()); 
+
         return [
             'deal_id' => 'required|exists:deals,id',
             'title' => 'required|string|max:255',
@@ -33,7 +35,7 @@ class StoreDeliverableRequest extends FormRequest
             // 'attachment' => 'nullable|file|mimes:jpg,jpeg,png,gif,webp,pdf,mp4,mov,avi,webm|max:20480',
 
         'deliver_type_id' =>'nullable|exists:deliver_types,id',     
-        'task_id' =>'nullable|exists:tasks,id',
+        // 'task_id' =>'nullable|exists:tasks,id',
         'sponsor_id' =>'nullable|exists:sponsors,id',
         'assigned_to' =>'nullable|exists:users,id',
         'status' =>'nullable|in:pending,in_progress,completed',

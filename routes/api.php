@@ -83,36 +83,35 @@ Route::middleware(['auth:api'])->group(function () {
                 Route::get('deliver-type/{id}', [DeliverTypeController::class, 'show']);
                 Route::put('deliver-type/update/{id}', [DeliverTypeController::class, 'update']);
                 Route::delete('deliver-type/delete/{id}', [DeliverTypeController::class, 'destroy']);
+
+                // Tickets Routes
+                Route::get('tickets/all', [TicketController::class, 'index']);
+                Route::post('tickets/add', [TicketController::class, 'store']);
+                Route::get('ticket/{id}', [TicketController::class, 'show']);
+                Route::put('ticket/update/{id}', [TicketController::class, 'update']);
+                Route::delete('ticket/{id}', [TicketController::class, 'destroy']);
+
+                // Invoice Routes
+                Route::get('invoice/all', [InvoiceController::class, 'index']);
+                Route::post('invoice/add', [InvoiceController::class, 'store']);
+                Route::get('invoice/{id}', [InvoiceController::class, 'show']);
+                Route::put('invoice/update/{id}', [InvoiceController::class, 'update']);
+                Route::delete('invoice/delete/{id}', [InvoiceController::class, 'destroy']);
+
+                // Internal Team
+                Route::get('internal-team/all', [InternalTeamController::class, 'index']);
+                Route::post('internal-team/add', [InternalTeamController::class, 'store']);
+                Route::get('internal-team/{id}', [InternalTeamController::class, 'show']);
+                Route::put('internal-team/{id}', [InternalTeamController::class, 'update']);
+                Route::delete('internal-team/{id}', [InternalTeamController::class, 'destroy']);
         });
 
 
         // Route for update Profile Information
         Route::get('settings', [SettingsController::class, 'show']);
         Route::put('settings/profile/update', [SettingsController::class, 'update']);
-        Route::put('settings/passwordupdate', [SettingsController::class, 'updatePassword']);
+        Route::put('settings/password/update', [SettingsController::class, 'updatePassword']);
      
-        // Internal Team
-        Route::get('internal-team/all', [InternalTeamController::class, 'index']);
-        Route::post('internal-team/add', [InternalTeamController::class, 'store']);
-        Route::get('internal-team/{id}', [InternalTeamController::class, 'show']);
-        Route::put('internal-team/{id}', [InternalTeamController::class, 'update']);
-        Route::delete('internal-team/{id}', [InternalTeamController::class, 'destroy']);
-
-        // Tickets Routes
-        Route::get('tickets/all', [TicketController::class, 'index']);
-        Route::post('tickets/add', [TicketController::class, 'store']);
-        Route::get('ticket/{id}', [TicketController::class, 'show']);
-        Route::put('ticket/update/{id}', [TicketController::class, 'update']);
-        Route::delete('ticket/{id}', [TicketController::class, 'destroy']);
-
-        // Invoice Routes
-        Route::get('invoice/all', [InvoiceController::class, 'index']);
-        Route::post('invoice/add', [InvoiceController::class, 'store']);
-        Route::get('invoice/{id}', [InvoiceController::class, 'show']);
-        Route::put('invoice/update/{id}', [InvoiceController::class, 'update']);
-        Route::delete('invoice/delete/{id}', [InvoiceController::class, 'destroy']);
-
-
         Route::middleware(['auth:api', 'role:sponser'])->prefix('sponsor')->group(function () {
                 Route::get('deliverables', [SponsorDeliverableController::class, 'index']);
 

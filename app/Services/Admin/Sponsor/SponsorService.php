@@ -12,6 +12,7 @@ use App\Mail\NewSponsorRequestMail;
 use App\Mail\SponsorApprovedMail;
 use App\Mail\SponsorCredentialsMail;
 use App\Mail\SponsorRejectedMail;
+use App\Models\Sponsor;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
@@ -185,6 +186,7 @@ public function create(array $data)
     {
         try {
             $sponsorApplication = $this->sponsorRepo->findApplicationById($id);
+            
             if (!$sponsorApplication) {
                 return ApiResponse::error(
                     ApiMessages::SPONSER_NOT_FOUND,
@@ -192,48 +194,50 @@ public function create(array $data)
                 );
             }
 
-            $existingUser = User::where('email', $sponsorApplication->email)->first();
-            if ($existingUser) {
+            if ($sponsorApplication->status === 'approved') {
                 return ApiResponse::error(
                     ApiMessages::EMAIL_APPROVED,
-                    StatusCodes::UNPROCESSABLE_ENTITY
+                    StatusCodes::BAD_REQUEST
                 );
             }
 
-            // Generate password
             $password = Str::random(10);
+            $user = $this->userRepo->findByEmail($sponsorApplication->email);
+            if ($user) {
+                $this->userRepo->updateByEmail($user->email, [
+                    'password' => $password,
+                    'role_id'  => 3,
+                ]);
+            } else {
+                $user = $this->userRepo->create([
+                    'name'     => $sponsorApplication->name,
+                    'email'    => $sponsorApplication->email,
+                    'password' => $password,
+                    'role_id'  => 3,
+                ]);
+            }
 
-            // Create sponsor user
-            $user = $this->userRepo->create([
-                'name' => $sponsorApplication->name,
-                'email' => $sponsorApplication->email,
-                'password' => $password,
-                'role_id' => 3,
-            ]);
+            $sponsor = Sponsor::where('user_id', $user->id)->first();
+            
+            if (!$sponsor) {
+                $sponsor = $this->sponsorRepo->create([
+                    'user_id'         => $user->id,
+                    'name'            => $sponsorApplication->name,
+                    'company_name'    => $sponsorApplication->company_name,
+                    'sponsor_name'    => $sponsorApplication->name,
+                    'industry'        => $sponsorApplication->industry,
+                    'website'         => $sponsorApplication->website_url,
+                    'primary_contact' => $sponsorApplication->contact_number,
+                    'email'           => $sponsorApplication->email,
+                    'phone'           => $sponsorApplication->contact_number,
+                    'location'        => $sponsorApplication->address,
+                ]);
+            }
 
-            $sponsor = $this->sponsorRepo->create([
-                'user_id'         => $user->id,
-                'name'            => $sponsorApplication->name,
-                'company_name'    => $sponsorApplication->company_name,
-                'sponsor_name'    => $sponsorApplication->name,
-                'industry'        => $sponsorApplication->industry,
-                'website'         => $sponsorApplication->website_url,
-                'primary_contact' => $sponsorApplication->contact_number,
-                'email'           => $sponsorApplication->email,
-                'phone'           => $sponsorApplication->contact_number,
-                'location'        => $sponsorApplication->address,
-            ]);
-
-            // Update sponsor application status
             $updatedApplication = $this->sponsorRepo->update(
                 $sponsorApplication,
-                [
-                    'status' => 'approved',
-                    'user_id' => $user->id,
-                ]
+                ['status' => 'approved']
             );
-
-            // Mail::to($user->email)->send(new SponsorApprovedMail($sponsorApplication, $password));
             Mail::to($user->email)->queue(new SponsorApprovedMail($sponsorApplication, $password));
 
             return ApiResponse::success(
@@ -263,11 +267,10 @@ public function create(array $data)
                 );
             }
 
-            $existingUser = User::where('email', $sponsorApplication->email)->first();
-            if ($existingUser) {
+            if ($sponsorApplication->status === 'approved') {
                 return ApiResponse::error(
-                    ApiMessages::EMAIL_REJECTED,
-                    StatusCodes::UNPROCESSABLE_ENTITY
+                    ApiMessages::CANNOT_BE_REJECTED,
+                    StatusCodes::BAD_REQUEST
                 );
             }
 

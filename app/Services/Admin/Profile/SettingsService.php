@@ -31,7 +31,6 @@ class SettingsService
 
         $updatedUser = $this->userRepo->updateByEmail($user->email, $data);
 
-        // Update related sponsor table if user is a sponsor
         if ($user->role_id == 3) {
             $sponsorData = [];
             if (isset($data['name'])) {
@@ -55,13 +54,17 @@ class SettingsService
     public function updatePassword($user, array $data)
     {
         if (!Hash::check($data['current_password'], $user->password)) {
-            return ApiResponse::error(ApiMessages::INVALID_CURRENT_PASSWORD, StatusCodes::BAD_REQUEST);
+            return ApiResponse::error(
+                ApiMessages::INVALID_CURRENT_PASSWORD,
+                StatusCodes::BAD_REQUEST);
         }
 
         $this->userRepo->updateByEmail($user->email, [
-            'password' => Hash::make($data['new_password'])
+            'password' => $data['new_password']
         ]);
 
-        return ApiResponse::success([], ApiMessages::PASSWORD_UPDATED, StatusCodes::OK);
+        return ApiResponse::success([], 
+                ApiMessages::PASSWORD_UPDATED, 
+                StatusCodes::OK);
     }
 }

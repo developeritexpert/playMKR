@@ -20,7 +20,7 @@ class DeliverableController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->query('limit', $request->query('per_page', 10));
-        $filters = $request->only(['search', 'status', 'from_date', 'to_date']); // Matches Figma
+        $filters = $request->only(['search', 'status', 'from_date', 'to_date']);
         
         return $this->deliverableService->getAll($filters, $perPage);
     }
